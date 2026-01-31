@@ -3,473 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>廈門漫遊 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
+    <title>廈門漫遊 2026 - Weather Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* --- 全新配色系統 (奶茶大理石 + 對比色) --- */
-            --bg-marble-base: #f0e5d8; /* 奶茶底色 */
-            --text-primary: #4a3f35; /* 深咖啡文字 */
-            --text-secondary: #8c7b6e; /* 淺咖啡次要文字 */
-            --accent-color: #c77d55; /* 溫暖的橘棕色 (重點/按鈕) */
-            --card-bg: #fffcf8; /* 米白卡片底 */
-            --card-border: #e0d6ca; /* 柔和邊框 */
-            
-            /* 柔和但有層次感的陰影 */
-            --shadow-soft: 0 4px 12px rgba(74, 63, 53, 0.08);
-            --shadow-float: 0 8px 20px rgba(74, 63, 53, 0.12);
-            --shadow-button: 0 6px 15px rgba(199, 125, 85, 0.3);
+            --bg-base: #f7f3ee;
+            --text-main: #5a4a42;
+            --text-light: #a6968e;
+            --accent: #d9a081;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --tape-color: rgba(217, 160, 129, 0.4);
+            --shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
         * {
             box-sizing: border-box; -webkit-tap-highlight-color: transparent;
-            font-family: 'Noto Sans TC', sans-serif;
+            font-family: 'Zen Maru Gothic', serif;
         }
 
         body {
-            margin: 0; padding: 0;
-            background-color: var(--bg-marble-base);
-            /* 模擬大理石紋理 */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.005' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.5' intercept='0.2'/%3E%3CfeFuncG type='linear' slope='0.5' intercept='0.2'/%3E%3CfeFuncB type='linear' slope='0.5' intercept='0.2'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0.94 0 0 0 0.03 0 0.90 0 0 0.03 0 0 0.85 0 0.03 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='0.4'/%3E%3C/svg%3E");
-            color: var(--text-primary);
-            height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+            margin: 0; padding: 0; background-color: var(--bg-base);
+            color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+            background-image: radial-gradient(#dcd5cc 1px, transparent 1px);
+            background-size: 25px 25px;
         }
 
-        /* --- 通用元件 --- */
-        .header {
-            padding: 20px; text-align: center; position: relative;
-            background: transparent; z-index: 10;
+        /* --- 標題區域 --- */
+        .header { padding: 30px 20px 10px; text-align: center; position: relative; }
+        .header h2 { 
+            font-size: 28px; font-weight: 900; margin: 0; letter-spacing: 1px;
+            display: inline-block; position: relative; z-index: 1;
         }
-        .header h2 { margin: 0; font-size: 24px; font-weight: 900; letter-spacing: 1px; color: var(--text-primary); }
+        .header h2::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%;
+            height: 8px; background: var(--tape-color); z-index: -1;
+        }
+
         .back-btn {
-            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
-            width: 40px; height: 40px; border-radius: 12px;
-            background: var(--card-bg); border: 2px solid var(--card-border);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-soft); color: var(--text-primary);
+            position: absolute; left: 20px; top: 35px; width: 38px; height: 38px;
+            border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow); border: 1.5px solid #eee; z-index: 10;
         }
 
-        .page { display: none; flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
-        .page.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .page { display: none; flex: 1; overflow-y: auto; padding: 15px 25px 120px; }
+        .page.active { display: block; animation: softFade 0.4s ease; }
+        @keyframes softFade { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- 天氣貼紙元件 --- */
+        .weather-sticker {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: var(--shadow);
+            border: 1px dashed var(--accent);
+        }
+        /* 天氣貼紙上方的紙膠帶 */
+        .weather-sticker::before {
+            content: 'XIAMEN WEATHER';
+            position: absolute; top: -12px; left: 20px;
+            background: var(--accent); color: white;
+            padding: 2px 10px; font-size: 10px; font-weight: 900;
+            border-radius: 5px; transform: rotate(-1deg);
+        }
+        .weather-info { display: flex; align-items: center; gap: 15px; }
+        .weather-temp { font-size: 32px; font-weight: 900; }
+        .weather-detail { font-size: 12px; line-height: 1.4; color: var(--text-light); }
+        .weather-icon-large { width: 50px; height: 50px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
 
         /* --- 首頁六宮格 --- */
-        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding-top: 10px; }
+        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         .card-menu {
-            background: var(--card-bg); border: 2px solid var(--card-border);
-            border-radius: 24px; padding: 25px 15px; box-shadow: var(--shadow-float);
-            text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: all 0.2s; position: relative; top: 0; color: var(--text-primary);
+            background: var(--card-bg); border-radius: 12px; padding: 25px 10px;
+            text-align: center; position: relative; box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.5); display: flex; flex-direction: column; align-items: center;
         }
-        .card-menu:active { top: 4px; box-shadow: var(--shadow-soft); }
-        .card-full { grid-column: span 2; flex-direction: row; gap: 20px; background: #f8f1e9; }
-        .icon-svg { width: 48px; height: 48px; fill: var(--text-primary); margin-bottom: 10px; }
-        .card-full .icon-svg { margin-bottom: 0; }
+        .card-menu::before {
+            content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            width: 50px; height: 18px; background: var(--tape-color); opacity: 0.8;
+        }
+        .card-full { grid-column: span 2; flex-direction: row; justify-content: center; gap: 15px; padding: 20px; }
+        .icon-box { width: 42px; height: 42px; stroke: var(--text-main); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .menu-label { font-size: 15px; font-weight: 700; margin-top: 8px; }
 
-        /* --- 底部導覽列 (柔和線條 + 懸浮感) --- */
+        /* --- 導覽列 --- */
         .nav-bar {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            height: 70px; background: var(--card-bg);
-            border-radius: 35px; /* 大圓角 */
-            display: flex; justify-content: space-around; align-items: center;
-            box-shadow: var(--shadow-float); border: 2px solid var(--card-border);
-            z-index: 100; padding: 0 10px;
-            transition: transform 0.3s;
+            position: fixed; bottom: 25px; left: 30px; right: 30px; height: 65px;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            border-radius: 30px; display: flex; justify-content: space-around; align-items: center;
+            box-shadow: 0 15px 35px rgba(90, 74, 66, 0.1); border: 1px solid rgba(255,255,255,0.5);
+            z-index: 100;
         }
-        .nav-bar.hidden { transform: translateY(150%); } /* 首頁隱藏 */
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; height: 100%; color: var(--text-secondary); font-size: 11px; font-weight: 700; }
-        .nav-item.active { color: var(--accent-color); }
-        .nav-icon { width: 24px; height: 24px; fill: currentColor; margin-bottom: 4px; }
+        .nav-bar.hidden { display: none; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; }
+        .nav-item.active { color: var(--accent); }
+        .nav-icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; margin-bottom: 2px; }
 
-        /* --- 底部大按鈕 & 懸浮計算機 --- */
-        .bottom-action { position: fixed; bottom: 100px; width: 100%; display: flex; justify-content: center; z-index: 90; pointer-events: none; }
-        .long-btn { 
-            width: 80%; padding: 16px; background: var(--accent-color); color: white; 
-            border: none; border-radius: 30px; font-size: 18px; font-weight: 900;
-            box-shadow: var(--shadow-button); pointer-events: auto;
-        }
-        .fab-calc {
-            position: fixed; right: 25px; bottom: 100px; width: 56px; height: 56px;
-            background: var(--text-primary); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-float); z-index: 95; color: white;
-        }
-
-        /* --- 頁面特定樣式 (參考圖片重設計) --- */
-
-        /* 行程頁 (參考 image_9, image_10) */
-        .timeline-container { border-left: 3px solid var(--card-border); margin-left: 15px; padding-left: 25px; }
-        .schedule-card {
-            background: var(--card-bg); border-radius: 20px; padding: 15px;
-            margin-bottom: 20px; box-shadow: var(--shadow-soft);
-            border: 2px solid var(--card-border); position: relative;
-        }
-        .schedule-card::before {
-            content: ''; position: absolute; left: -36px; top: 20px;
-            width: 14px; height: 14px; background: var(--accent-color);
-            border-radius: 50%; border: 3px solid var(--bg-marble-base);
-        }
-        .schedule-time { font-size: 14px; color: var(--accent-color); font-weight: 900; margin-bottom: 5px; }
-        .schedule-title { font-size: 18px; font-weight: 900; margin-bottom: 5px; }
-        .schedule-note { font-size: 14px; color: var(--text-secondary); }
-        .delete-btn-abs { position: absolute; right: 15px; top: 15px; color: var(--text-secondary); padding: 5px; }
-
-        /* 交通頁 (參考 image_9 機票) */
-        .ticket-card {
-            background: var(--card-bg); border-radius: 24px; overflow: hidden;
-            box-shadow: var(--shadow-soft); margin-bottom: 20px;
-            border: 2px solid var(--card-border);
-        }
-        .ticket-header {
-            background: var(--accent-color); color: white; padding: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .ticket-body { padding: 20px; text-align: center; }
-        .route-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .airport { font-size: 32px; font-weight: 900; color: var(--text-primary); }
-        .plane-icon { flex: 1; text-align: center; color: var(--card-border); position: relative; }
-        .plane-icon::after { content: '✈️'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 20px; color: var(--accent-color); }
-        .plane-icon svg { width: 100%; height: 2px; fill: currentColor; }
-        .ticket-info { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: 14px; }
-
-        /* 清單頁 (參考 image_11 分類) */
-        .category-group { margin-bottom: 25px; }
-        .category-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 10px; padding: 0 10px;
-        }
-        .category-title { font-size: 16px; font-weight: 900; color: var(--text-primary); }
-        .category-progress { font-size: 12px; color: var(--text-secondary); background: var(--card-border); padding: 2px 8px; border-radius: 10px; }
-        .list-card-container {
-            background: var(--card-bg); border-radius: 24px;
-            border: 2px solid var(--card-border); overflow: hidden; box-shadow: var(--shadow-soft);
-        }
-        .check-item {
-            display: flex; align-items: center; padding: 15px 20px;
-            border-bottom: 1px solid var(--card-border);
-        }
-        .check-item:last-child { border-bottom: none; }
-        .check-box {
-            width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--card-border);
-            margin-right: 15px; display: flex; align-items: center; justify-content: center;
-            color: white; transition: all 0.2s; flex-shrink: 0;
-        }
-        .check-box.checked { background: var(--accent-color); border-color: var(--accent-color); }
-        .item-text { flex: 1; font-size: 16px; font-weight: 700; }
-        .item-text.checked { text-decoration: line-through; color: var(--text-secondary); }
-
-        /* 記帳計算機 */
-        .calc-box { background: var(--card-bg); border: 2px solid var(--card-border); border-radius: 28px; padding: 25px; box-shadow: var(--shadow-soft); }
-        .calc-input { width: 100%; border: none; border-bottom: 3px solid var(--card-border); font-size: 20px; padding: 10px 0; margin-bottom: 20px; background: transparent; color: var(--text-primary); font-weight: 700; outline: none; }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-        .calc-btn { background: var(--card-bg); border: 2px solid var(--card-border); border-radius: 18px; padding: 15px 0; font-size: 22px; text-align: center; font-weight: 900; color: var(--text-primary); box-shadow: var(--shadow-soft); }
-        .calc-btn:active { background: var(--card-border); transform: translateY(2px); box-shadow: none; }
-        .calc-btn.accent { background: var(--accent-color); color: white; border: none; }
-        .history-item { display: flex; justify-content: space-between; padding: 15px; background: var(--card-bg); border-radius: 16px; margin-bottom: 10px; border: 2px solid var(--card-border); }
-
-        /* --- 彈窗 (Modal) --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; display: none; justify-content: center; align-items: end; }
-        .modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
-        .modal-content { background: var(--card-bg); width: 100%; border-radius: 30px 30px 0 0; padding: 25px; max-height: 80vh; overflow-y: auto; animation: slideUpModal 0.3s; }
-        @keyframes slideUpModal { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-title { font-size: 20px; font-weight: 900; }
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); font-weight: 700; }
-        .form-input { width: 100%; padding: 12px; border: 2px solid var(--card-border); border-radius: 12px; font-size: 16px; background: var(--bg-marble-base); color: var(--text-primary); font-weight: 700; outline: none; }
-        .form-row { display: flex; gap: 15px; }
+        /* --- 記帳 UI --- */
+        .calc-section { background: white; border-radius: 20px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px dashed var(--accent); }
+        #calc-num { font-size: 42px; font-weight: 900; text-align: right; }
+        #calc-twd { font-size: 18px; color: var(--accent); text-align: right; font-weight: 700; margin-bottom: 15px; }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .key { background: var(--bg-base); border: none; border-radius: 12px; padding: 15px 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
+        .key.accent { background: var(--accent); color: white; grid-row: span 3; }
+        .list-item { background: white; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--accent); }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div id="back-btn" class="back-btn" onclick="showPage('home')">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        <div id="back-btn" class="back-btn" onclick="showPage('home')" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </div>
         <h2 id="page-title">廈門漫遊 2026</h2>
     </div>
 
     <div id="home" class="page active">
+        
+        <div class="weather-sticker">
+            <div class="weather-info">
+                <svg class="weather-icon-large" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <div>
+                    <div class="weather-temp" id="temp-display">21°C</div>
+                    <div class="weather-detail" id="weather-desc">多雲轉晴 / 降雨率 10%</div>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 16px; font-weight: 900;" id="current-date">02.27 Fri</div>
+                <div style="font-size: 10px; color: var(--text-light);">廈門市 思明區</div>
+            </div>
+        </div>
+
         <div class="dashboard">
             <div class="card-menu card-full" onclick="showPage('schedule')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>
-                <span>行程規劃</span>
+                <svg class="icon-box"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span class="menu-label">行程規劃</span>
             </div>
             <div class="card-menu" onclick="showPage('transport')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                <span>交通票券</span>
+                <svg class="icon-box"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span class="menu-label">交通票券</span>
             </div>
             <div class="card-menu" onclick="showPage('wallet')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
-                <span>匯率記帳</span>
+                <svg class="icon-box"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="8" y1="18" x2="8" y2="18"/></svg>
+                <span class="menu-label">匯率記帳</span>
             </div>
             <div class="card-menu" onclick="showPage('gift')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h16c1.1 0 2-.89 2-2V8c0-1.1-.89-2-2-2z"/></svg>
-                <span>伴手禮</span>
+                <svg class="icon-box"><path d="M20 12V22H4V12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                <span class="menu-label">伴手禮</span>
             </div>
             <div class="card-menu" onclick="showPage('luggage')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 6h-2V3c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v3H7c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
-                <span>行李清單</span>
+                <svg class="icon-box"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                <span class="menu-label">行李清單</span>
             </div>
             <div class="card-menu card-full" onclick="window.open('https://www.google.com/maps')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                <span>Google Maps</span>
+                <svg class="icon-box"><circle cx="12" cy="10" r="3"/><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg>
+                <span class="menu-label">Google Maps</span>
             </div>
         </div>
-    </div>
-
-    <div id="schedule" class="page">
-        <div style="display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;">
-            <button class="calc-btn accent" style="padding: 10px 20px; font-size: 16px; flex-shrink: 0;" onclick="setDay('2/27')">2/27 (五)</button>
-            <button class="calc-btn" style="padding: 10px 20px; font-size: 16px; flex-shrink: 0;" onclick="setDay('2/28')">2/28 (六)</button>
-            <button class="calc-btn" style="padding: 10px 20px; font-size: 16px; flex-shrink: 0;" onclick="setDay('3/01')">3/01 (日)</button>
-        </div>
-        <div class="timeline-container" id="schedule-list"></div>
-    </div>
-
-    <div id="transport" class="page">
-        <div id="transport-list"></div>
     </div>
 
     <div id="wallet" class="page">
-        <div class="calc-box">
-            <input type="text" id="calc-note" class="calc-input" placeholder="輸入消費項目...">
-            <div style="text-align: right; margin-bottom: 15px;">
-                <div style="font-size: 14px; color: var(--text-secondary);">CNY</div>
-                <div id="calc-display" style="font-size: 48px; font-weight: 900; line-height: 1;">0</div>
-                <div style="font-size: 20px; color: var(--accent-color); font-weight: 700;">≈ NT$ <span id="calc-twd">0</span></div>
-            </div>
-            <div class="calc-grid">
-                <button class="calc-btn" onclick="pressKey('7')">7</button><button class="calc-btn" onclick="pressKey('8')">8</button><button class="calc-btn" onclick="pressKey('9')">9</button><button class="calc-btn" style="color: var(--accent-color);" onclick="pressKey('C')">C</button>
-                <button class="calc-btn" onclick="pressKey('4')">4</button><button class="calc-btn" onclick="pressKey('5')">5</button><button class="calc-btn" onclick="pressKey('6')">6</button><button class="calc-btn accent" style="grid-row: span 3;" onclick="saveExpense()">記帳</button>
-                <button class="calc-btn" onclick="pressKey('1')">1</button><button class="calc-btn" onclick="pressKey('2')">2</button><button class="calc-btn" onclick="pressKey('3')">3</button>
-                <button class="calc-btn" style="grid-column: span 2;" onclick="pressKey('0')">0</button><button class="calc-btn" onclick="pressKey('.')">.</button>
+        <div class="calc-section">
+            <input type="text" id="exp-name" style="width:100%; border:none; border-bottom:1px solid #eee; padding:10px 0; font-size:16px; outline:none; margin-bottom:10px;" placeholder="輸入品項...">
+            <div id="calc-num">0</div>
+            <div id="calc-twd">≈ NT$ 0</div>
+            <div class="calc-keys">
+                <button class="key" onclick="press('7')">7</button><button class="key" onclick="press('8')">8</button><button class="key" onclick="press('9')">9</button><button class="key" onclick="press('C')">C</button>
+                <button class="key" onclick="press('4')">4</button><button class="key" onclick="press('5')">5</button><button class="key" onclick="press('6')">6</button><button class="key accent" onclick="saveExp()">記帳</button>
+                <button class="key" onclick="press('1')">1</button><button class="key" onclick="press('2')">2</button><button class="key" onclick="press('3')">3</button>
+                <button class="key" style="grid-column: span 2;" onclick="press('0')">0</button><button class="key" onclick="press('.')">.</button>
             </div>
         </div>
-        <h3 style="margin: 25px 0 15px;">最近紀錄</h3>
-        <div id="expense-list"></div>
+        <div id="exp-list"></div>
     </div>
 
-    <div id="gift" class="page checklist-page"></div>
-    <div id="luggage" class="page checklist-page"></div>
+    <div id="schedule" class="page"><h3>行程規劃 (開發中)</h3></div>
+    <div id="transport" class="page"><h3>交通票券 (開發中)</h3></div>
+    <div id="gift" class="page"><h3>伴手禮 (開發中)</h3></div>
+    <div id="luggage" class="page"><h3>行李清單 (開發中)</h3></div>
 
-    <div class="bottom-action" id="add-btn-container">
-        <button class="long-btn" onclick="openAddModal()">+ 新增項目</button>
-    </div>
-    
-    <div class="fab-calc" onclick="showPage('wallet')">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="8" y1="18" x2="8" y2="18"/></svg>
-    </div>
-
-    <nav class="nav-bar hidden" id="nav-bar">
-        <div class="nav-item active" onclick="showPage('home')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>首頁</div>
-        <div class="nav-item" onclick="showPage('schedule')"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>行程</div>
-        <div class="nav-item" onclick="showPage('transport')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>交通</div>
-        <div class="nav-item" onclick="showPage('gift')"><svg class="nav-icon" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>清單</div>
+    <nav class="nav-bar hidden" id="main-nav">
+        <div class="nav-item" onclick="showPage('home')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>首頁</div>
+        <div class="nav-item" onclick="showPage('schedule')"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>行程</div>
+        <div class="nav-item" onclick="showPage('wallet')"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/></svg>記帳</div>
+        <div class="nav-item" onclick="showPage('gift')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 12V22H4V12"/></svg>清單</div>
     </nav>
 
-    <div id="modal" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title" id="modal-title">新增項目</div>
-                <div onclick="closeModal()" style="padding: 5px; cursor: pointer;">✕</div>
-            </div>
-            <div id="modal-form-body"></div>
-            <button class="long-btn" style="width: 100%; margin-top: 20px;" onclick="submitModal()">儲存</button>
-        </div>
-    </div>
-
     <script>
-        // --- 資料與狀態 ---
-        let curPage = 'home', curDay = '2/27', calcVal = '';
+        let calcVal = '';
         const RATE = 4.5;
-        const TITLES = { home: '廈門漫遊 2026', schedule: '行程規劃', transport: '交通票券', wallet: '匯率記帳', gift: '伴手禮清單', luggage: '行李清單' };
-        
-        // 預設資料
-        let data = {
-            schedule: JSON.parse(localStorage.getItem('xm_schedule')) || { '2/27': [], '2/28': [], '3/01': [] },
-            transport: JSON.parse(localStorage.getItem('xm_transport')) || [],
-            wallet: JSON.parse(localStorage.getItem('xm_wallet')) || [],
-            gift: JSON.parse(localStorage.getItem('xm_gift')) || {},
-            luggage: JSON.parse(localStorage.getItem('xm_luggage')) || { '證件錢包': [], '電子產品': [], '衣物': [] }
-        };
 
-        // --- 核心功能 ---
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            document.getElementById('main-nav').classList.toggle('hidden', id === 'home');
             document.getElementById('back-btn').style.display = id === 'home' ? 'none' : 'flex';
-            document.getElementById('page-title').innerText = TITLES[id];
-            document.getElementById('nav-bar').classList.toggle('hidden', id === 'home');
-            document.getElementById('add-btn-container').style.display = ['home', 'wallet'].includes(id) ? 'none' : 'flex';
             
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.toggle('active', item.textContent.includes(id === 'gift' || id === 'luggage' ? '清單' : TITLES[id].substring(0,2)));
-            });
-
-            curPage = id; renderPage();
+            const titles = {home:'廈門漫遊 2026', schedule:'行程規劃', transport:'交通票券', wallet:'匯率記帳', gift:'伴手禮清單', luggage:'行李清單'};
+            document.getElementById('page-title').innerText = titles[id];
+            if(id === 'wallet') renderWallet();
         }
 
-        function setDay(day) { curDay = day; renderPage(); }
-        function saveData() { localStorage.setItem(`xm_${curPage}`, JSON.stringify(data[curPage])); renderPage(); }
-
-        // --- 渲染頁面 ---
-        function renderPage() {
-            const container = document.getElementById(curPage.includes('list') ? curPage : curPage + (curPage === 'schedule' ? '-list' : (curPage === 'wallet' ? '' : '-list')));
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (curPage === 'schedule') {
-                data.schedule[curDay]?.forEach((item, i) => {
-                    container.innerHTML += `
-                        <div class="schedule-card">
-                            <div class="schedule-time">${item.time}</div>
-                            <div class="schedule-title">${item.title}</div>
-                            <div class="schedule-note">${item.note || ''}</div>
-                            <div class="delete-btn-abs" onclick="deleteItem(${i})">✕</div>
-                        </div>`;
-                });
-            } else if (curPage === 'transport') {
-                data.transport.forEach((item, i) => {
-                    container.innerHTML += `
-                        <div class="ticket-card">
-                            <div class="ticket-header"><span>${item.type}</span><span>${item.date}</span></div>
-                            <div class="ticket-body">
-                                <div class="route-row">
-                                    <div class="airport">${item.from}</div>
-                                    <div class="plane-icon"><svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/></svg></div>
-                                    <div class="airport">${item.to}</div>
-                                </div>
-                                <div class="ticket-info">
-                                    <div><span>出發</span><br><strong>${item.depTime}</strong></div>
-                                    <div><span>班次</span><br><strong>${item.no}</strong></div>
-                                    <div><span>抵達</span><br><strong>${item.arrTime}</strong></div>
-                                </div>
-                            </div>
-                            <div style="text-align:center; padding-bottom:10px; color:var(--text-secondary); cursor:pointer;" onclick="deleteItem(${i})">刪除此票券</div>
-                        </div>`;
-                });
-            } else if (curPage === 'gift' || curPage === 'luggage') {
-                for (const [category, items] of Object.entries(data[curPage])) {
-                    const doneCount = items.filter(i => i.done).length;
-                    let categoryHtml = `
-                        <div class="category-group">
-                            <div class="category-header">
-                                <div class="category-title">${category}</div>
-                                <div class="category-progress">${doneCount}/${items.length}</div>
-                            </div>
-                            <div class="list-card-container">`;
-                    items.forEach((item, i) => {
-                        categoryHtml += `
-                            <div class="check-item" onclick="toggleCheck('${category}', ${i})">
-                                <div class="check-box ${item.done ? 'checked' : ''}">${item.done ? '✓' : ''}</div>
-                                <div class="item-text ${item.done ? 'checked' : ''}">${item.text}</div>
-                                <div style="color:var(--card-border); padding:5px;" onclick="event.stopPropagation(); deleteItem('${category}', ${i})">✕</div>
-                            </div>`;
-                    });
-                    categoryHtml += `</div></div>`;
-                    container.innerHTML += categoryHtml;
-                }
-            }
+        // 天氣資料初始化
+        function initWeather() {
+            const now = new Date();
+            const options = { month: '2-digit', day: '2-digit', weekday: 'short' };
+            document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', options);
+            
+            // 這裡可以換成 fetch API 抓取即時天氣
+            // 目前先模擬 2 月廈門的平均氣溫
+            const mockTemp = Math.floor(Math.random() * (22 - 15 + 1)) + 15;
+            document.getElementById('temp-display').innerText = `${mockTemp}°C`;
         }
 
-        // --- 互動邏輯 ---
-        function toggleCheck(cat, i) { data[curPage][cat][i].done = !data[curPage][cat][i].done; saveData(); }
-        function deleteItem(arg1, arg2) {
-            if (curPage === 'schedule') data.schedule[curDay].splice(arg1, 1);
-            else if (curPage === 'transport') data.transport.splice(arg1, 1);
-            else data[curPage][arg1].splice(arg2, 1);
-            saveData();
-        }
-
-        // --- 計算機 ---
-        function pressKey(k) {
+        // 計算機功能
+        function press(k) {
             if (k === 'C') calcVal = ''; else calcVal += k;
-            document.getElementById('calc-display').innerText = calcVal || '0';
-            document.getElementById('calc-twd').innerText = Math.round((parseFloat(calcVal) || 0) * RATE);
-        }
-        function saveExpense() {
-            const note = document.getElementById('calc-note').value;
-            const amt = parseFloat(calcVal);
-            if (!note || isNaN(amt)) return alert('請輸入項目和金額');
-            data.wallet.unshift({ note, cny: amt, twd: Math.round(amt * RATE) });
-            localStorage.setItem('xm_wallet', JSON.stringify(data.wallet));
-            calcVal = ''; document.getElementById('calc-note').value = ''; pressKey('C'); renderWalletHistory();
-        }
-        function renderWalletHistory() {
-            document.getElementById('expense-list').innerHTML = data.wallet.map(i => `
-                <div class="history-item">
-                    <div><strong>${i.note}</strong><br><small style="color:var(--text-secondary)">¥${i.cny}</small></div>
-                    <div style="font-weight:900; color:var(--accent-color)">NT$${i.twd}</div>
-                </div>`).join('');
+            document.getElementById('calc-num').innerText = calcVal || '0';
+            document.getElementById('calc-twd').innerText = '≈ NT$ ' + Math.round((parseFloat(calcVal)||0) * RATE);
         }
 
-        // --- 彈窗新增 (Modal) ---
-        function openAddModal() {
-            document.getElementById('modal').classList.add('active');
-            const formBody = document.getElementById('modal-form-body');
-            formBody.innerHTML = '';
-            
-            if (curPage === 'schedule') {
-                formBody.innerHTML = `
-                    <div class="form-row">
-                        <div class="form-group" style="flex:1"><label class="form-label">時間</label><input type="time" id="m-time" class="form-input"></div>
-                        <div class="form-group" style="flex:1"><label class="form-label">類別</label><select id="m-tag" class="form-input"><option>景點</option><option>美食</option><option>交通</option></select></div>
-                    </div>
-                    <div class="form-group"><label class="form-label">名稱 (例: SHIBUYA SKY)</label><input type="text" id="m-title" class="form-input"></div>
-                    <div class="form-group"><label class="form-label">備註</label><textarea id="m-note" class="form-input" rows="3"></textarea></div>`;
-            } else if (curPage === 'transport') {
-                formBody.innerHTML = `
-                     <div class="form-group"><label class="form-label">類型</label><select id="m-type" class="form-input"><option>機票</option><option>船票</option><option>高鐵</option></select></div>
-                     <div class="form-row">
-                        <div class="form-group" style="flex:1"><label class="form-label">出發地 (代號)</label><input type="text" id="m-from" class="form-input" placeholder="TPE"></div>
-                        <div class="form-group" style="flex:1"><label class="form-label">目的地 (代號)</label><input type="text" id="m-to" class="form-input" placeholder="XMN"></div>
-                     </div>
-                     <div class="form-row">
-                        <div class="form-group" style="flex:1"><label class="form-label">日期</label><input type="date" id="m-date" class="form-input"></div>
-                        <div class="form-group" style="flex:1"><label class="form-label">班次</label><input type="text" id="m-no" class="form-input"></div>
-                     </div>
-                     <div class="form-row">
-                        <div class="form-group" style="flex:1"><label class="form-label">出發時間</label><input type="time" id="m-dep" class="form-input"></div>
-                        <div class="form-group" style="flex:1"><label class="form-label">抵達時間</label><input type="time" id="m-arr" class="form-input"></div>
-                     </div>`;
-            } else {
-                const cats = Object.keys(data[curPage]);
-                formBody.innerHTML = `
-                    <div class="form-group"><label class="form-label">分類</label>
-                        <select id="m-cat" class="form-input">${cats.map(c => `<option>${c}</option>`).join('')}<option value="new">+ 新增分類...</option></select>
-                    </div>
-                    <div class="form-group" id="new-cat-group" style="display:none"><label class="form-label">新分類名稱</label><input type="text" id="m-new-cat" class="form-input"></div>
-                    <div class="form-group"><label class="form-label">物品名稱</label><input type="text" id="m-item" class="form-input"></div>`;
-                document.getElementById('m-cat').addEventListener('change', e => document.getElementById('new-cat-group').style.display = e.target.value === 'new' ? 'block' : 'none');
-            }
+        function saveExp() {
+            const name = document.getElementById('exp-name').value;
+            if(!name || !calcVal) return alert('請輸入品項與金額');
+            let data = JSON.parse(localStorage.getItem('xm_exp') || '[]');
+            data.unshift({ name, cny: calcVal, twd: Math.round(calcVal * RATE) });
+            localStorage.setItem('xm_exp', JSON.stringify(data));
+            document.getElementById('exp-name').value = '';
+            calcVal = ''; press('C'); renderWallet();
         }
 
-        function closeModal(e) { if (!e || e.target === document.getElementById('modal')) document.getElementById('modal').classList.remove('active'); }
-
-        function submitModal() {
-            if (curPage === 'schedule') {
-                const time = document.getElementById('m-time').value, title = document.getElementById('m-title').value;
-                if (!time || !title) return alert('請填寫時間與名稱');
-                data.schedule[curDay].push({ time, title, tag: document.getElementById('m-tag').value, note: document.getElementById('m-note').value });
-                data.schedule[curDay].sort((a, b) => a.time.localeCompare(b.time));
-            } else if (curPage === 'transport') {
-                data.transport.push({
-                    type: document.getElementById('m-type').value, from: document.getElementById('m-from').value, to: document.getElementById('m-to').value,
-                    date: document.getElementById('m-date').value, no: document.getElementById('m-no').value,
-                    depTime: document.getElementById('m-dep').value, arrTime: document.getElementById('m-arr').value
-                });
-            } else {
-                let cat = document.getElementById('m-cat').value;
-                if (cat === 'new') { cat = document.getElementById('m-new-cat').value; if (!cat) return alert('請輸入分類名稱'); data[curPage][cat] = []; }
-                const text = document.getElementById('m-item').value;
-                if (!text) return alert('請輸入物品名稱');
-                data[curPage][cat].push({ text, done: false });
-            }
-            saveData(); closeModal();
+        function renderWallet() {
+            const data = JSON.parse(localStorage.getItem('xm_exp') || '[]');
+            document.getElementById('exp-list').innerHTML = data.map(i => `
+                <div class="list-item">
+                    <span><b>${i.name}</b> <small>(¥${i.cny})</small></span>
+                    <span style="color:var(--accent); font-weight:900;">NT$ ${i.twd}</span>
+                </div>
+            `).join('');
         }
 
-        window.onload = () => { showPage('home'); renderWalletHistory(); };
+        window.onload = () => {
+            initWeather();
+            showPage('home');
+        };
     </script>
 </body>
 </html>
