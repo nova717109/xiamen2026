@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>廈門漫遊 2026 - Master Flagship</title>
+    <title>廈門漫遊 2026 - Master Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -35,61 +35,77 @@
         .page.active { display: block; animation: softFade 0.4s ease; }
         @keyframes softFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Dashboard: Icons 置中與對齊 --- */
-        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        /* --- Home: Weather & Large Icons --- */
+        .weather-sticker { background: var(--card-bg); border-radius: 15px; padding: 15px 20px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; position: relative; box-shadow: var(--shadow); border: 1px dashed var(--accent); }
+        .weather-sticker::before { content: 'XIAMEN WEATHER'; position: absolute; top: -12px; left: 20px; background: var(--accent); color: white; padding: 2px 10px; font-size: 10px; font-weight: 900; border-radius: 5px; transform: rotate(-1deg); }
+        
+        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         .card-menu { 
-            background: var(--card-bg); border-radius: 15px; padding: 25px 10px; 
+            background: var(--card-bg); border-radius: 12px; padding: 25px 10px; 
             text-align: center; position: relative; box-shadow: var(--shadow); 
             border: 1px solid rgba(255,255,255,0.5); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             min-height: 160px; 
         }
         .card-menu::before { content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 50px; height: 18px; background: var(--tape-color); opacity: 0.8; }
-        .card-full { grid-column: span 2; min-height: 130px; }
+        .card-full { grid-column: span 2; min-height: 120px; }
         
-        .icon-box { width: 75px; height: 75px; stroke: var(--text-main); stroke-width: 1.2; fill: none; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 8px; }
+        /* 置中且更大的 Icon */
+        .icon-box { width: 72px; height: 72px; stroke: var(--text-main); stroke-width: 1.2; fill: none; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 5px; }
         .menu-label { font-size: 19px; font-weight: 900; color: var(--text-main); }
 
-        /* --- 全域懸浮按鈕 --- */
-        .float-calc { position: fixed; right: 20px; bottom: 180px; width: 60px; height: 60px; background: var(--text-main); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 200; border: none; }
-        
-        /* --- 換匯 Modal --- */
-        #quick-calc-modal .modal-content { border-radius: 30px; margin: auto 20px 100px; }
-        .calc-display-mini { background: var(--bg-base); padding: 20px; border-radius: 15px; text-align: right; margin-bottom: 15px; }
+        /* --- List Items --- */
+        .card-item { background: white; border-radius: 15px; padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow); display: flex; align-items: center; border-left: 5px solid var(--accent); position: relative; }
+        .check-box { width: 26px; height: 26px; border: 2px solid var(--accent); border-radius: 6px; margin-right: 15px; flex-shrink: 0; }
+        .check-box.done { background: var(--accent); }
+        .check-box.done::after { content: '✓'; color: white; display: flex; justify-content: center; align-items: center; font-weight: 900; }
+        .map-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 13px; text-decoration: none; margin-top: 5px; border: 1px solid var(--accent); padding: 2px 8px; border-radius: 20px; }
 
-        /* --- 導覽列文字大一點 --- */
-        .nav-bar { position: fixed; bottom: 20px; left: 15px; right: 15px; height: 75px; background: rgba(255,255,255,0.95); border-radius: 20px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 90; }
-        .nav-item { flex: 1; text-align: center; color: var(--text-light); font-size: 14px; font-weight: 900; }
+        /* --- Navigation: Multi-item --- */
+        .nav-bar { 
+            position: fixed; bottom: 20px; left: 15px; right: 15px; height: 75px; 
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+            border-radius: 20px; display: flex; justify-content: space-around; align-items: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee; z-index: 90;
+            padding: 0 5px;
+        }
+        .nav-bar.hidden { display: none; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 12px; font-weight: 900; }
         .nav-item.active { color: var(--accent); }
+        .nav-icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.5; margin-bottom: 4px; }
 
-        /* --- 記帳清單顯示優化 --- */
-        .exp-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .exp-amt-cny { font-size: 12px; color: var(--text-light); }
-        .exp-amt-twd { font-size: 18px; font-weight: 900; color: var(--accent); }
-
-        .btn-add { position: fixed; bottom: 105px; left: 50%; transform: translateX(-50%); width: 160px; padding: 12px; background: var(--text-main); color: white; border-radius: 30px; border: none; font-weight: 900; z-index: 80; }
-        
-        /* Modal 通用樣式 */
+        /* --- Modal --- */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: flex-end; }
         .modal.active { display: flex; }
         .modal-content { background: white; width: 100%; border-radius: 30px 30px 0 0; padding: 30px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 900; color: var(--text-light); margin-bottom: 5px; }
+        .input-group input { width: 100%; border: 2.5px solid var(--bg-base); padding: 12px; border-radius: 12px; font-size: 16px; outline: none; }
+
+        .btn-add { position: fixed; bottom: 105px; left: 50%; transform: translateX(-50%); width: 160px; padding: 12px; background: var(--text-main); color: white; border-radius: 30px; border: none; font-weight: 900; box-shadow: var(--shadow); z-index: 80; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div id="back-btn" class="back-btn" onclick="showPage('home')" style="display:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div id="back-btn" class="back-btn" onclick="showPage('home')" style="display:none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </div>
         <h2 id="page-title">廈門漫遊 2026</h2>
     </div>
 
-    <button class="float-calc" onclick="openQuickCalc()">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="12" y1="6" x2="12" y2="6"/></svg>
-    </button>
-
     <div id="home" class="page active">
+        <div class="weather-sticker">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <svg style="width:40px; height:40px; stroke:var(--accent); fill:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <div><div style="font-size:28px; font-weight:900;">21°C</div><div style="font-size:12px; color:var(--text-light);">廈門市 思明區</div></div>
+            </div>
+            <div style="text-align:right;"><div style="font-size:16px; font-weight:900;" id="date-now">02.27 Fri</div></div>
+        </div>
+
         <div class="dashboard">
             <div class="card-menu card-full" onclick="showPage('schedule')">
-                <svg class="icon-box"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <svg class="icon-box"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <span class="menu-label">行程規劃</span>
             </div>
             <div class="card-menu" onclick="showPage('transport')">
@@ -120,9 +136,9 @@
             <input type="text" id="exp-name" style="width:100%; border:none; border-bottom:1px solid #eee; padding:10px 0; font-size:18px; outline:none;" placeholder="🛒 輸入品項...">
             <div id="calc-num" style="font-size:48px; font-weight:900; text-align:right; margin:10px 0;">0</div>
             <div id="calc-twd" style="text-align:right; color:var(--accent); font-weight:900;">≈ NT$ 0</div>
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
+            <div class="dashboard" style="grid-template-columns: repeat(4, 1fr); gap:10px;">
                 <button class="card-menu" style="min-height:60px;" onclick="press('7')">7</button><button class="card-menu" style="min-height:60px;" onclick="press('8')">8</button><button class="card-menu" style="min-height:60px;" onclick="press('9')">9</button><button class="card-menu" style="min-height:60px; color:var(--accent);" onclick="press('C')">C</button>
-                <button class="card-menu" style="min-height:60px;" onclick="press('4')">4</button><button class="card-menu" style="min-height:60px;" onclick="press('5')">5</button><button class="card-menu" style="min-height:60px;" onclick="press('6')">6</button><button class="card-menu" style="min-height:60px; background:var(--accent); color:white; grid-row:span 2;" onclick="saveExp()">記帳</button>
+                <button class="card-menu" style="min-height:60px;" onclick="press('4')">4</button><button class="card-menu" style="min-height:60px;" onclick="press('5')">5</button><button class="card-menu" style="min-height:60px;" onclick="press('6')">6</button><button class="card-menu" style="min-height:60px; background:var(--accent); color:white; grid-row:span 2;" onclick="saveExp()">儲存</button>
                 <button class="card-menu" style="min-height:60px;" onclick="press('1')">1</button><button class="card-menu" style="min-height:60px;" onclick="press('2')">2</button><button class="card-menu" style="min-height:60px;" onclick="press('3')">3</button>
             </div>
         </div>
@@ -139,32 +155,19 @@
         <div class="nav-item" onclick="showPage('wallet')">記帳</div>
     </nav>
 
-    <div id="quick-calc-modal" class="modal" onclick="if(event.target==this) closeQuickCalc()">
-        <div class="modal-content">
-            <h3 style="margin:0 0 15px 0;">快速換算 (CNY ➔ TWD)</h3>
-            <div class="calc-display-mini">
-                <div id="q-num" style="font-size:32px; font-weight:900;">0</div>
-                <div id="q-twd" style="color:var(--accent); font-weight:900;">≈ NT$ 0</div>
-            </div>
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;">
-                <button class="card-menu" style="min-height:50px;" onclick="qPress('7')">7</button><button class="card-menu" style="min-height:50px;" onclick="qPress('8')">8</button><button class="card-menu" style="min-height:50px;" onclick="qPress('9')">9</button><button class="card-menu" style="min-height:50px; color:var(--accent);" onclick="qPress('C')">C</button>
-                <button class="card-menu" style="min-height:50px;" onclick="qPress('4')">4</button><button class="card-menu" style="min-height:50px;" onclick="qPress('5')">5</button><button class="card-menu" style="min-height:50px;" onclick="qPress('6')">6</button><button class="card-menu" style="min-height:50px; background:var(--text-main); color:white; grid-row:span 2;" onclick="closeQuickCalc()">完成</button>
-                <button class="card-menu" style="min-height:50px;" onclick="qPress('1')">1</button><button class="card-menu" style="min-height:50px;" onclick="qPress('2')">2</button><button class="card-menu" style="min-height:50px;" onclick="qPress('3')">3</button>
-            </div>
-        </div>
-    </div>
-
     <div id="modal" class="modal" onclick="if(event.target==this) closeModal()">
         <div class="modal-content">
-            <h3 id="modal-title" style="margin:0 0 20px 0;">新增項目</h3>
+            <h3 id="modal-title" style="margin:0 0 20px 0;">新增</h3>
             <div id="modal-fields"></div>
             <button class="btn-add" style="position:static; width:100%; transform:none; margin-top:20px;" onclick="submitModal()">確認儲存</button>
         </div>
     </div>
 
     <script>
-        let curPage = 'home', calcVal = '', qVal = '';
+        let curPage = 'home', calcVal = '';
         const RATE = 4.5;
+
+        // 資料初始化，補回交通資訊
         let db = {
             schedule: JSON.parse(localStorage.getItem('xm_sch') || '[]'),
             transport: JSON.parse(localStorage.getItem('xm_trans') || '[]'),
@@ -180,80 +183,93 @@
             document.getElementById('main-nav').classList.toggle('hidden', id === 'home');
             document.getElementById('back-btn').style.display = id === 'home' ? 'none' : 'flex';
             document.getElementById('btn-add').style.display = (id === 'home' || id === 'wallet') ? 'none' : 'block';
+            
+            // 更新導覽列狀態
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.innerText.includes(getPageName(id)));
+            });
             render();
+        }
+
+        function getPageName(id) {
+            const names = {home:'首頁', schedule:'行程', gift:'伴手禮', luggage:'行李', wallet:'記帳', transport:'交通'};
+            return names[id];
         }
 
         function render() {
             const list = document.getElementById(curPage + '-list');
             if (!list) return;
-            let data = db[curPage];
             
+            let data = db[curPage];
+            list.innerHTML = data.map((item, i) => `
+                <div class="card-item" onclick="toggleItem(${i})">
+                    <div class="check-box ${item.done ? 'done' : ''}"></div>
+                    <div style="flex:1">
+                        <b style="font-size:18px;">${item.name}</b><br>
+                        <small style="color:var(--text-light)">${item.time || item.note || ''}</small>
+                        ${item.map ? `<a href="${item.map}" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖連結</a>` : ''}
+                    </div>
+                    <div style="color:#ccc; font-size:20px;" onclick="event.stopPropagation(); delItem(${i})">✕</div>
+                </div>
+            `).join('');
+
             if(curPage === 'wallet') {
-                list.innerHTML = data.map(i => `
-                    <div class="card-menu" style="min-height:auto; flex-direction:row; padding:15px; margin-bottom:10px; justify-content:space-between; width:100%;">
-                        <div style="text-align:left;"><b>${i.name}</b></div>
-                        <div style="text-align:right;">
-                            <div class="exp-amt-cny">¥${i.cny}</div>
-                            <div class="exp-amt-twd">NT$ ${i.twd}</div>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                list.innerHTML = data.map((item, i) => `
-                    <div class="card-menu" style="min-height:auto; flex-direction:row; padding:15px; margin-bottom:10px; text-align:left; width:100%;" onclick="toggleItem(${i})">
-                        <div style="flex:1;">
-                            <b style="font-size:18px;">${item.name}</b><br>
-                            <small style="color:var(--text-light)">${item.time || item.note || ''}</small>
-                        </div>
-                        <div style="color:#ccc;" onclick="event.stopPropagation(); delItem(${i})">✕</div>
-                    </div>
-                `).join('');
+                list.innerHTML = db.wallet.map(i => `<div class="card-item"><b>${i.name}</b><span style="flex:1; text-align:right; font-weight:900; color:var(--accent);">NT$ ${i.twd}</span></div>`).join('');
             }
         }
 
-        // 快速計算機邏輯
-        function openQuickCalc() { document.getElementById('quick-calc-modal').classList.add('active'); qVal = ''; qPress(''); }
-        function closeQuickCalc() { document.getElementById('quick-calc-modal').classList.remove('active'); }
-        function qPress(k) {
-            if(k==='C') qVal = ''; else qVal += k;
-            document.getElementById('q-num').innerText = qVal || '0';
-            document.getElementById('q-twd').innerText = '≈ NT$ ' + Math.round((parseFloat(qVal)||0)*RATE);
-        }
-
-        // 記帳計算機邏輯
-        function press(k) { if(k==='C') calcVal=''; else calcVal+=k; document.getElementById('calc-num').innerText=calcVal||'0'; document.getElementById('calc-twd').innerText='≈ NT$ '+Math.round((parseFloat(calcVal)||0)*RATE); }
-        function saveExp() {
-            const name = document.getElementById('exp-name').value;
-            if(!name || !calcVal) return;
-            db.wallet.unshift({ name, cny: calcVal, twd: Math.round(calcVal*RATE) });
-            localStorage.setItem('xm_exp', JSON.stringify(db.wallet));
-            calcVal=''; document.getElementById('exp-name').value=''; press('C'); render();
-        }
-
-        // 彈窗與其他邏輯
         function openModal() {
             const fields = document.getElementById('modal-fields');
             document.getElementById('modal').classList.add('active');
             let html = `<div class="input-group"><label>名稱</label><input type="text" id="m-name"></div>`;
-            if (curPage === 'schedule') html += `<div class="input-group"><label>時間</label><input type="time" id="m-time"></div>`;
-            else html += `<div class="input-group"><label>備註</label><input type="text" id="m-note"></div>`;
+            
+            if (curPage === 'schedule') {
+                html = `<div class="input-group"><label>時間</label><input type="time" id="m-time"></div>` + html + 
+                       `<div class="input-group"><label>Google Map 網址</label><input type="url" id="m-map" placeholder="https://maps.app.goo.gl/..."></div>`;
+            } else {
+                html += `<div class="input-group"><label>備註</label><input type="text" id="m-note"></div>`;
+            }
             fields.innerHTML = html;
         }
-        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+
         function submitModal() {
             const name = document.getElementById('m-name').value;
             if(!name) return;
             const newItem = { name, done: false };
-            if (curPage === 'schedule') newItem.time = document.getElementById('m-time').value;
-            else newItem.note = document.getElementById('m-note').value;
+            if (curPage === 'schedule') {
+                newItem.time = document.getElementById('m-time').value;
+                newItem.map = document.getElementById('m-map').value;
+            } else {
+                newItem.note = document.getElementById('m-note').value;
+            }
             db[curPage].push(newItem);
-            localStorage.setItem('xm_'+(curPage==='schedule'?'sch':curPage==='gift'?'gift':'lug'), JSON.stringify(db[curPage]));
-            closeModal(); render();
+            saveAll(); closeModal();
         }
-        function toggleItem(i) { db[curPage][i].done = !db[curPage][i].done; render(); }
-        function delItem(i) { db[curPage].splice(i, 1); render(); }
 
-        window.onload = () => showPage('home');
+        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+        function toggleItem(i) { db[curPage][i].done = !db[curPage][i].done; saveAll(); }
+        function delItem(i) { db[curPage].splice(i, 1); saveAll(); }
+        function saveAll() {
+            const keys = {schedule:'xm_sch', transport:'xm_trans', gift:'xm_gift', luggage:'xm_lug', wallet:'xm_exp'};
+            localStorage.setItem(keys[curPage], JSON.stringify(db[curPage]));
+            render();
+        }
+
+        // 計算機
+        function press(k) { if(k==='C') calcVal=''; else calcVal+=k; document.getElementById('calc-num').innerText=calcVal||'0'; document.getElementById('calc-twd').innerText='≈ NT$ '+Math.round((parseFloat(calcVal)||0)*RATE); }
+        function saveExp() {
+            const name = document.getElementById('exp-name').value;
+            if(!name || !calcVal) return;
+            db.wallet.unshift({ name, twd: Math.round(calcVal*RATE) });
+            localStorage.setItem('xm_exp', JSON.stringify(db.wallet));
+            calcVal=''; document.getElementById('exp-name').value=''; press('C'); render();
+        }
+
+        window.onload = () => {
+            const now = new Date();
+            document.getElementById('date-now').innerText = (now.getMonth()+1) + '.' + now.getDate() + ' ' + now.toLocaleDateString('en-US', {weekday:'short'});
+            showPage('home');
+        };
     </script>
 </body>
 </html>
