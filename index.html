@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>廈門漫遊 2026</title>
+    
+    <style>
+        :root {
+            --bg-marble: #f5efe6; /* 奶茶色底 */
+            --deep-coffee: #5d4037; /* 深咖框線 */
+            --light-coffee: #d7ccc8; /* 淺咖重點 */
+            --card-bg: #ffffff;
+            --shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-marble);
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            font-weight: bold;
+            color: var(--deep-coffee);
+        }
+
+        /* 六宮格容器 */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; padding: 20px;
+        }
+
+        /* 像貼紙一樣的卡片 */
+        .card {
+            background: var(--card-bg);
+            border: 2px solid var(--deep-coffee);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: 0.2s;
+        }
+        .card:active { transform: translateY(3px); box-shadow: none; }
+        .card-full { grid-column: span 2; background: var(--light-coffee); }
+
+        /* 置中長條按鈕 */
+        .footer-action {
+            position: fixed;
+            bottom: 90px; width: 100%;
+            display: flex; justify-content: center;
+        }
+        .add-btn {
+            width: 85%; padding: 15px;
+            background: var(--deep-coffee);
+            color: #fff; border: none;
+            border-radius: 40px; font-size: 16px;
+        }
+
+        /* 底部導覽 */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: white; border-top: 2px solid var(--deep-coffee);
+            display: flex; justify-content: space-around; align-items: center;
+        }
+        
+        /* 簡單的記帳顯示區 */
+        #expense-list { padding: 0 20px 150px 20px; }
+        .record-item {
+            background: white; margin-bottom: 10px;
+            padding: 15px; border-radius: 12px;
+            border-left: 5px solid var(--deep-coffee);
+            display: flex; justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="padding: 20px; font-size: 24px;">廈門漫遊 2026</div>
+
+    <div class="dashboard">
+        <div class="card card-full">🗓️ 行程表 (2/27-3/1)</div>
+        <div class="card">🚢 交通資訊</div>
+        <div class="card" onclick="openCalc()">💰 記帳本</div>
+        <div class="card">🎁 伴手禮</div>
+        <div class="card">🧳 行記清單</div>
+        <div class="card card-full" onclick="window.location.href='https://www.google.com/maps'">📍 Google Map</div>
+    </div>
+
+    <div id="expense-list">
+        </div>
+
+    <div class="footer-action">
+        <button class="add-btn" onclick="addExpense()">+ 新增一筆消費</button>
+    </div>
+
+    <nav class="nav-bar">
+        <div>🏠 首頁</div>
+        <div>🕒 行程</div>
+        <div>👛 錢包</div>
+    </nav>
+
+    <script>
+        const rate = 4.5;
+
+        // 模擬新增消費並儲存到手機
+        function addExpense() {
+            const cny = prompt("請輸入人民幣金額 (¥):");
+            if (cny && !isNaN(cny)) {
+                const twd = Math.round(cny * rate);
+                const record = { cny, twd, time: new Date().toLocaleTimeString() };
+                
+                saveToLocal(record);
+                renderList();
+            }
+        }
+
+        // 儲存到手機 LocalStorage (關掉網頁資料還會在)
+        function saveToLocal(record) {
+            let history = JSON.parse(localStorage.getItem('xiamen_records')) || [];
+            history.push(record);
+            localStorage.setItem('xiamen_records', JSON.stringify(history));
+        }
+
+        // 渲染列表
+        function renderList() {
+            const list = document.getElementById('expense-list');
+            const history = JSON.parse(localStorage.getItem('xiamen_records')) || [];
+            list.innerHTML = '<h3>最近消費 (TWD 匯率 4.5)</h3>';
+            history.reverse().forEach(item => {
+                list.innerHTML += `
+                    <div class="record-item">
+                        <span>${item.time}</span>
+                        <span>¥${item.cny} → <b>NT$${item.twd}</b></span>
+                    </div>
+                `;
+            });
+        }
+
+        // 初始載入
+        window.onload = renderList;
+    </script>
+</body>
+</html>
