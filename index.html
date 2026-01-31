@@ -11,10 +11,10 @@
             --deep-coffee: #5d4037;
             --light-coffee: #d7ccc8;
             --card-bg: #ffffff;
-            --shadow: 0 6px 12px rgba(93, 64, 55, 0.15);
+            --shadow: 0 8px 20px rgba(93, 64, 55, 0.12);
         }
 
-        /* 全域樣式：強制粗體無襯線 */
+        /* 全域樣式：極粗無襯線 */
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -25,99 +25,94 @@
         body {
             margin: 0; padding: 0;
             background-color: var(--bg-marble);
-            background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%);
             color: var(--deep-coffee);
             height: 100vh; display: flex; flex-direction: column;
+            overflow: hidden;
         }
 
-        /* 頁面切換控制 */
-        .page { display: none; padding: 20px; flex: 1; overflow-y: auto; padding-bottom: 160px; }
-        .page.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* 標題列與返回鍵 */
+        .header {
+            padding: 15px 20px; display: flex; align-items: center; justify-content: center;
+            position: relative; background: var(--bg-marble); z-index: 100;
+        }
+        .back-btn {
+            position: absolute; left: 20px; width: 45px; height: 45px;
+            background: white; border: 2.5px solid var(--deep-coffee);
+            border-radius: 15px; display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow); cursor: pointer;
+        }
 
-        /* --- 首頁六宮格 --- */
-        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px; }
+        /* 頁面切換 */
+        .page { display: none; padding: 10px 20px; flex: 1; overflow-y: auto; padding-bottom: 180px; }
+        .page.active { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* --- 首頁設計 --- */
+        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 10px; }
         .card {
-            background: var(--card-bg); border: 2px solid var(--deep-coffee);
-            border-radius: 20px; padding: 25px 10px; box-shadow: var(--shadow);
+            background: var(--card-bg); border: 2.5px solid var(--deep-coffee);
+            border-radius: 28px; padding: 30px 15px; box-shadow: var(--shadow);
             text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .card:active { transform: translateY(4px); box-shadow: none; }
+        .card:active { transform: scale(0.96); transition: 0.1s; }
         .card-full { grid-column: span 2; background: var(--light-coffee); flex-direction: row; gap: 15px; }
 
-        /* --- 簡約日系 SVG 圖示 --- */
-        .icon-svg { width: 45px; height: 45px; fill: var(--deep-coffee); margin-bottom: 8px; }
-        .card-full .icon-svg { margin-bottom: 0; }
+        /* --- 統一大型圓潤 Icon --- */
+        .icon-svg { width: 55px; height: 55px; fill: var(--deep-coffee); }
+        .nav-icon { width: 32px; height: 32px; fill: var(--deep-coffee); margin-bottom: 3px; }
 
-        /* --- 時間軸設計 --- */
-        .date-slider {
-            display: flex; overflow-x: auto; gap: 10px; padding: 10px 0;
-            scrollbar-width: none; border-bottom: 1px solid var(--light-coffee); margin-bottom: 20px;
-        }
-        .date-tab {
-            padding: 10px 20px; background: white; border: 2px solid var(--deep-coffee);
-            border-radius: 50px; white-space: nowrap; font-size: 14px;
-        }
+        /* --- 時間軸與清單 --- */
+        .date-slider { display: flex; gap: 10px; padding: 10px 0; overflow-x: auto; margin-bottom: 20px; }
+        .date-tab { padding: 12px 25px; background: white; border: 2.5px solid var(--deep-coffee); border-radius: 20px; white-space: nowrap; }
         .date-tab.active { background: var(--deep-coffee); color: white; }
 
-        .timeline { border-left: 3px solid var(--light-coffee); margin-left: 20px; padding-left: 25px; }
-        .timeline-item { position: relative; margin-bottom: 25px; background: white; padding: 15px; border-radius: 15px; border: 2px solid var(--deep-coffee); box-shadow: var(--shadow); }
-        .timeline-item::before { content: ""; position: absolute; left: -34px; top: 15px; width: 15px; height: 15px; background: var(--deep-coffee); border-radius: 50%; }
+        .timeline { border-left: 4px solid var(--light-coffee); margin-left: 15px; padding-left: 25px; }
+        .timeline-item { position: relative; margin-bottom: 25px; background: white; padding: 18px; border-radius: 22px; border: 2.5px solid var(--deep-coffee); box-shadow: var(--shadow); }
+        .timeline-item::before { content: ""; position: absolute; left: -36px; top: 22px; width: 18px; height: 18px; background: var(--deep-coffee); border-radius: 50%; border: 4px solid var(--bg-marble); }
+        .time-badge { font-size: 14px; background: var(--light-coffee); padding: 2px 8px; border-radius: 8px; margin-bottom: 5px; display: inline-block; }
 
-        /* --- 大按鈕計算機 --- */
-        .calc-display { background: white; border: 2px solid var(--deep-coffee); border-radius: 20px; padding: 20px; margin-bottom: 15px; text-align: right; box-shadow: var(--shadow); }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .calc-btn { background: white; border: 2px solid var(--deep-coffee); border-radius: 15px; padding: 20px 0; font-size: 20px; box-shadow: var(--shadow); text-align: center; }
-        .calc-btn:active { transform: translateY(2px); box-shadow: none; }
-        .calc-btn.action { background: var(--light-coffee); }
+        /* --- 計算機介面 --- */
+        .calc-box { background: white; border: 2.5px solid var(--deep-coffee); border-radius: 28px; padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); }
+        .item-input { width: 100%; border: none; border-bottom: 3px solid var(--light-coffee); font-size: 20px; padding: 10px 0; margin-bottom: 10px; color: var(--deep-coffee); outline: none; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .calc-btn { background: white; border: 2.5px solid var(--deep-coffee); border-radius: 18px; padding: 18px 0; font-size: 22px; text-align: center; }
+        .calc-btn:active { background: var(--light-coffee); }
 
-        /* --- 全域懸浮計算機按鈕 --- */
-        .fab-calc {
-            position: fixed; right: 20px; bottom: 170px; width: 60px; height: 60px;
-            background: var(--deep-coffee); border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; box-shadow: 0 8px 16px rgba(0,0,0,0.2); z-index: 999;
-        }
-        .fab-calc svg { fill: white; width: 30px; height: 30px; }
-
-        /* --- 底部導覽列 --- */
-        .nav-bar {
-            height: 80px; background: white; border-top: 2px solid var(--deep-coffee);
-            display: flex; justify-content: space-around; align-items: center;
-            position: fixed; bottom: 0; width: 100%; z-index: 100;
-        }
-        .nav-item { text-align: center; font-size: 12px; }
-        .nav-icon { width: 28px; height: 28px; fill: var(--deep-coffee); margin-bottom: 2px; }
+        /* --- 底部導覽列 (拆分五項) --- */
+        .nav-bar { height: 90px; background: white; border-top: 3.5px solid var(--deep-coffee); display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0; width: 100%; z-index: 200; padding-bottom: 10px; }
+        .nav-item { text-align: center; font-size: 11px; flex: 1; }
 
         /* --- 置中長條按鈕 --- */
-        .bottom-add-container { position: fixed; bottom: 95px; width: 100%; display: flex; justify-content: center; z-index: 90; }
-        .long-btn { width: 85%; padding: 15px; background: var(--deep-coffee); color: white; border: none; border-radius: 40px; font-size: 16px; box-shadow: var(--shadow); }
+        .bottom-action { position: fixed; bottom: 105px; width: 100%; display: flex; justify-content: center; z-index: 150; }
+        .long-btn { width: 85%; padding: 18px; background: var(--deep-coffee); color: white; border: none; border-radius: 40px; font-size: 18px; box-shadow: var(--shadow); }
 
-        /* --- 清單與勾選 --- */
-        .check-item { display: flex; align-items: center; background: white; padding: 15px; border-radius: 15px; border: 2px solid var(--deep-coffee); margin-bottom: 10px; box-shadow: var(--shadow); }
-        .check-item input { width: 22px; height: 22px; margin-right: 15px; accent-color: var(--deep-coffee); }
-        .delete-x { margin-left: auto; color: #888; font-size: 20px; padding: 5px; }
+        /* --- 刪除與勾選 --- */
+        .list-card { display: flex; align-items: center; background: white; padding: 18px; border-radius: 22px; border: 2.5px solid var(--deep-coffee); margin-bottom: 12px; box-shadow: var(--shadow); }
+        .delete-btn { margin-left: auto; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: #eee; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="fab-calc" onclick="showPage('wallet')">
-        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 15H7v-2h4v2zm0-4H7v-2h4v2zm0-4H7V8h4v2zm6 8h-4v-2h4v2zm0-4h-4v-2h4v2zm0-4h-4V8h4v2z"/></svg>
+    <div class="header">
+        <div id="back-btn" class="back-btn" onclick="showPage('home')" style="display:none;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </div>
+        <h2 id="page-title">廈門漫遊 2026</h2>
     </div>
 
     <div id="home" class="page active">
-        <h1 style="text-align:center; letter-spacing: 2px;">廈門漫遊 2026</h1>
         <div class="dashboard">
             <div class="card card-full" onclick="showPage('schedule')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
-                <span>行程規劃表</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                <span>行程規劃時間軸</span>
             </div>
             <div class="card" onclick="showPage('transport')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                <span>交通資訊</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 16H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V8h12v2z"/></svg>
+                <span>交通時間</span>
             </div>
             <div class="card" onclick="showPage('wallet')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8z"/></svg>
-                <span>記帳本</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                <span>匯率記帳</span>
             </div>
             <div class="card" onclick="showPage('gift')">
                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h16c1.1 0 2-.89 2-2V8c0-1.1-.89-2-2-2z"/></svg>
@@ -128,162 +123,167 @@
                 <span>行李清單</span>
             </div>
             <div class="card card-full" onclick="window.open('https://www.google.com/maps')">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span>Google Map 導航</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                <span>地圖導覽</span>
             </div>
         </div>
     </div>
 
     <div id="schedule" class="page">
-        <h2>廈門時間軸</h2>
         <div class="date-slider">
-            <div class="date-tab active" onclick="switchDate('2/27')">2/27 (五)</div>
-            <div class="date-tab" onclick="switchDate('2/28')">2/28 (六)</div>
-            <div class="date-tab" onclick="switchDate('3/01')">3/01 (日)</div>
+            <div class="date-tab active" onclick="setDay('2/27')">2/27 (五)</div>
+            <div class="date-tab" onclick="setDay('2/28')">2/28 (六)</div>
+            <div class="date-tab" onclick="setDay('3/01')">3/01 (日)</div>
         </div>
-        <div class="timeline" id="timeline-list"></div>
+        <div class="timeline" id="timeline-box"></div>
+    </div>
+
+    <div id="transport" class="page">
+        <div id="transport-box"></div>
     </div>
 
     <div id="wallet" class="page">
-        <h2>記帳計算機</h2>
-        <div class="calc-display">
-            <div style="font-size: 14px; color: #888;">人民幣 CNY</div>
-            <div id="calc-input" style="font-size: 28px;">0</div>
-            <div style="font-size: 14px; color: var(--deep-coffee); margin-top: 5px;">台幣約 NT$ <span id="calc-twd">0</span></div>
+        <div class="calc-box">
+            <input type="text" id="calc-name" class="item-input" placeholder="輸入品項名稱...">
+            <div style="text-align: right; padding: 10px 0;">
+                <span style="font-size: 14px; opacity: 0.6;">CNY</span>
+                <div id="calc-val" style="font-size: 40px; margin: 5px 0;">0</div>
+                <span style="color: var(--deep-coffee);">≈ NT$ <span id="calc-nt">0</span></span>
+            </div>
+            <div class="calc-grid">
+                <div class="calc-btn" onclick="press('7')">7</div><div class="calc-btn" onclick="press('8')">8</div><div class="calc-btn" onclick="press('9')">9</div><div class="calc-btn" style="background:var(--light-coffee)" onclick="press('C')">C</div>
+                <div class="calc-btn" onclick="press('4')">4</div><div class="calc-btn" onclick="press('5')">5</div><div class="calc-btn" onclick="press('6')">6</div><div class="calc-btn" style="background:var(--light-coffee); grid-row: span 3; display:flex; align-items:center; justify-content:center;" onclick="saveExp()">記帳</div>
+                <div class="calc-btn" onclick="press('1')">1</div><div class="calc-btn" onclick="press('2')">2</div><div class="calc-btn" onclick="press('3')">3</div>
+                <div class="calc-btn" style="grid-column: span 2;" onclick="press('0')">0</div><div class="calc-btn" onclick="press('.')">.</div>
+            </div>
         </div>
-        <div class="calc-grid">
-            <div class="calc-btn" onclick="calcNum('7')">7</div><div class="calc-btn" onclick="calcNum('8')">8</div><div class="calc-btn" onclick="calcNum('9')">9</div><div class="calc-btn action" onclick="calcClear()">C</div>
-            <div class="calc-btn" onclick="calcNum('4')">4</div><div class="calc-btn" onclick="calcNum('5')">5</div><div class="calc-btn" onclick="calcNum('6')">6</div><div class="calc-btn action" onclick="saveExpense()">記帳</div>
-            <div class="calc-btn" onclick="calcNum('1')">1</div><div class="calc-btn" onclick="calcNum('2')">2</div><div class="calc-btn" onclick="calcNum('3')">3</div><div class="calc-btn" onclick="calcNum('.')">.</div>
-            <div class="calc-btn" style="grid-column: span 4;" onclick="calcNum('0')">0</div>
-        </div>
-        <div id="expense-history" style="margin-top: 20px;"></div>
+        <div id="wallet-box"></div>
     </div>
 
-    <div id="generic-list" class="page">
-        <h2 id="list-title">內容</h2>
-        <div id="items-container"></div>
-    </div>
+    <div id="gift" class="page"><div id="gift-box"></div></div>
+    <div id="luggage" class="page"><div id="luggage-box"></div></div>
 
-    <div class="bottom-add-container" id="add-btn-wrapper" style="display:none;">
-        <button class="long-btn" onclick="handleAdd()">+ 新增紀錄</button>
+    <div class="bottom-action" id="action-area" style="display:none;">
+        <button class="long-btn" onclick="doAdd()">+ 新增紀錄</button>
     </div>
 
     <nav class="nav-bar">
-        <div class="nav-item" onclick="showPage('home')">
-            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>首頁
-        </div>
-        <div class="nav-item" onclick="showPage('schedule')">
-            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm3.3 13.3L11 13V7h1.5v5.25L17 14.92l-.71.71z"/></svg>行程
-        </div>
-        <div class="nav-item" onclick="showPage('wallet')">
-            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>記帳
-        </div>
-        <div class="nav-item" onclick="showPage('gift')">
-            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>清單
-        </div>
+        <div class="nav-item" onclick="showPage('home')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>首頁</div>
+        <div class="nav-item" onclick="showPage('schedule')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>行程</div>
+        <div class="nav-item" onclick="showPage('wallet')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8z"/></svg>記帳</div>
+        <div class="nav-item" onclick="showPage('gift')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h16c1.1 0 2-.89 2-2V8c0-1.1-.89-2-2-2z"/></svg>伴手禮</div>
+        <div class="nav-item" onclick="showPage('luggage')"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 6h-2V3c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v3H7c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>行李</div>
     </nav>
 
     <script>
-        let currentPage = 'home';
-        let currentDay = '2/27';
-        let calcVal = "";
+        let curPage = 'home';
+        let curDay = '2/27';
+        let calcStr = "";
         const rate = 4.5;
 
-        function showPage(p) {
-            currentPage = p;
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.getElementById('add-btn-wrapper').style.display = (p === 'home') ? 'none' : 'flex';
+        const titles = { home: "廈門漫遊 2026", schedule: "行程時間軸", transport: "交通資訊", wallet: "匯率記帳", gift: "伴手禮清單", luggage: "行李清單" };
 
-            if(['transport', 'gift', 'luggage'].includes(p)) {
-                document.getElementById('list-title').innerText = p === 'transport' ? '交通資訊' : (p === 'gift' ? '伴手禮清單' : '行李清單');
-                document.getElementById('generic-list').classList.add('active');
-                renderGenericList();
-            } else {
-                document.getElementById(p).classList.add('active');
-                if(p === 'schedule') renderTimeline();
-                if(p === 'wallet') renderHistory();
-            }
+        function showPage(id) {
+            curPage = id;
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.getElementById('back-btn').style.display = id === 'home' ? 'none' : 'flex';
+            document.getElementById('action-area').style.display = (id === 'home' || id === 'wallet') ? 'none' : 'flex';
+            document.getElementById('page-title').innerText = titles[id];
+            render();
         }
 
-        // --- 行程功能 ---
-        function switchDate(d) {
-            currentDay = d;
+        function setDay(d) {
+            curDay = d;
             document.querySelectorAll('.date-tab').forEach(t => t.classList.toggle('active', t.innerText.includes(d)));
-            renderTimeline();
+            render();
         }
 
-        function renderTimeline() {
-            const data = JSON.parse(localStorage.getItem('x_sched_'+currentDay)) || [];
-            document.getElementById('timeline-list').innerHTML = data.map((item, i) => `
-                <div class="timeline-item">
-                    ${item} <span class="delete-x" onclick="deleteItem('x_sched_${currentDay}', ${i}, 'timeline')">✕</span>
-                </div>
-            `).join('');
+        // 計算機邏輯
+        function press(k) {
+            if (k === 'C') calcStr = "";
+            else calcStr += k;
+            document.getElementById('calc-val').innerText = calcStr || "0";
+            document.getElementById('calc-nt').innerText = calcStr ? Math.round(parseFloat(calcStr) * rate) : "0";
         }
 
-        // --- 計算機功能 ---
-        function calcNum(n) { calcVal += n; updateCalc(); }
-        function calcClear() { calcVal = ""; updateCalc(); }
-        function updateCalc() {
-            document.getElementById('calc-input').innerText = calcVal || "0";
-            document.getElementById('calc-twd').innerText = calcVal ? Math.round(calcVal * rate) : "0";
-        }
-        function saveExpense() {
-            if(!calcVal) return;
-            const history = JSON.parse(localStorage.getItem('x_wallet')) || [];
-            history.unshift({ cny: calcVal, twd: Math.round(calcVal * rate), time: new Date().toLocaleTimeString() });
-            localStorage.setItem('x_wallet', JSON.stringify(history));
-            calcClear(); renderHistory();
-        }
-        function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('x_wallet')) || [];
-            document.getElementById('expense-history').innerHTML = history.map((h, i) => `
-                <div class="check-item">¥${h.cny} → NT$${h.twd} <span class="delete-x" onclick="deleteItem('x_wallet', ${i}, 'history')">✕</span></div>
-            `).join('');
+        function saveExp() {
+            const name = document.getElementById('calc-name').value;
+            const amt = parseFloat(calcStr);
+            if (!name || isNaN(amt)) return alert("請填寫品項名稱與金額！");
+            let data = JSON.parse(localStorage.getItem('x_exp')) || [];
+            data.unshift({ name, cny: amt, nt: Math.round(amt * rate) });
+            localStorage.setItem('x_exp', JSON.stringify(data));
+            document.getElementById('calc-name').value = "";
+            press('C'); render();
         }
 
-        // --- 通用清單功能 ---
-        function renderGenericList() {
-            const data = JSON.parse(localStorage.getItem('x_'+currentPage)) || [];
-            document.getElementById('items-container').innerHTML = data.map((item, i) => `
-                <div class="check-item">
-                    <input type="checkbox" ${item.done ? 'checked' : ''} onclick="toggleCheck(${i})">
-                    <span style="${item.done ? 'text-decoration:line-through; opacity:0.5' : ''}">${item.text}</span>
-                    <span class="delete-x" onclick="deleteItem('x_${currentPage}', ${i}, 'generic')">✕</span>
-                </div>
-            `).join('');
-        }
-
-        function toggleCheck(i) {
-            let data = JSON.parse(localStorage.getItem('x_'+currentPage));
-            data[i].done = !data[i].done;
-            localStorage.setItem('x_'+currentPage, JSON.stringify(data));
-            renderGenericList();
-        }
-
-        // --- 統一新增處理 ---
-        function handleAdd() {
-            const input = prompt("請輸入新增內容：");
-            if(!input) return;
-            const key = (currentPage === 'schedule') ? 'x_sched_'+currentDay : 'x_'+currentPage;
-            let data = JSON.parse(localStorage.getItem(key)) || [];
-            if(['gift', 'luggage', 'transport'].includes(currentPage)) {
-                data.push({ text: input, done: false });
+        // 統一新增邏輯
+        function doAdd() {
+            let data = JSON.parse(localStorage.getItem('x_'+curPage + (curPage==='schedule'?curDay:''))) || [];
+            if (curPage === 'schedule') {
+                const time = prompt("輸入時間 (如 10:30):");
+                const loc = prompt("輸入地點:");
+                if (time && loc) data.push({ time, loc });
+            } else if (curPage === 'transport') {
+                const mode = prompt("交通方式 (如 飛機/船):");
+                const time = prompt("出發時間:");
+                if (mode && time) data.push({ mode, time });
             } else {
-                data.push(input);
+                const text = prompt("新增內容:");
+                if (text) data.push({ text, done: false });
             }
-            localStorage.setItem(key, JSON.stringify(data));
-            showPage(currentPage);
+            localStorage.setItem('x_'+curPage + (curPage==='schedule'?curDay:''), JSON.stringify(data));
+            render();
         }
 
-        function deleteItem(key, i, type) {
+        function toggle(i) {
+            let data = JSON.parse(localStorage.getItem('x_'+curPage));
+            data[i].done = !data[i].done;
+            localStorage.setItem('x_'+curPage, JSON.stringify(data));
+            render();
+        }
+
+        function del(key, i) {
             let data = JSON.parse(localStorage.getItem(key));
             data.splice(i, 1);
             localStorage.setItem(key, JSON.stringify(data));
-            showPage(currentPage);
+            render();
         }
 
+        function render() {
+            if (curPage === 'schedule') {
+                const data = JSON.parse(localStorage.getItem('x_schedule'+curDay)) || [];
+                document.getElementById('timeline-box').innerHTML = data.map((it, i) => `
+                    <div class="timeline-item">
+                        <span class="time-badge">${it.time}</span>
+                        <div style="font-size: 18px;">${it.loc}</div>
+                        <div class="delete-btn" style="position:absolute; right:15px; top:15px;" onclick="del('x_schedule${curDay}', ${i})">✕</div>
+                    </div>`).join('');
+            } else if (curPage === 'transport') {
+                const data = JSON.parse(localStorage.getItem('x_transport')) || [];
+                document.getElementById('transport-box').innerHTML = data.map((it, i) => `
+                    <div class="list-card">
+                        <div style="font-size: 20px;">${it.mode} <span style="font-size:14px; opacity:0.6; margin-left:10px;">${it.time}</span></div>
+                        <div class="delete-btn" onclick="del('x_transport', ${i})">✕</div>
+                    </div>`).join('');
+            } else if (curPage === 'wallet') {
+                const data = JSON.parse(localStorage.getItem('x_exp')) || [];
+                document.getElementById('wallet-box').innerHTML = data.map((it, i) => `
+                    <div class="list-card">
+                        <div><b>${it.name}</b><br><small>¥${it.cny} → NT$${it.nt}</small></div>
+                        <div class="delete-btn" onclick="del('x_exp', ${i})">✕</div>
+                    </div>`).join('');
+            } else if (curPage === 'gift' || curPage === 'luggage') {
+                const data = JSON.parse(localStorage.getItem('x_'+curPage)) || [];
+                document.getElementById(curPage+'-box').innerHTML = data.map((it, i) => `
+                    <div class="list-card" onclick="toggle(${i})">
+                        <input type="checkbox" ${it.done?'checked':''} style="width:22px; height:22px; margin-right:15px;">
+                        <span style="${it.done?'text-decoration:line-through; opacity:0.4':''}">${it.text}</span>
+                        <div class="delete-btn" onclick="event.stopPropagation(); del('x_${curPage}', ${i})">✕</div>
+                    </div>`).join('');
+            }
+        }
         window.onload = () => showPage('home');
     </script>
 </body>
