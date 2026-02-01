@@ -11,72 +11,62 @@
             --text-main: #4a3f35;
             --text-light: #8c7e74;
             --accent: #d96d32;
-            --white: #ffffff;
             --border-thick: 2.5px solid var(--text-main);
             --shadow: 4px 4px 0px rgba(74, 63, 53, 0.2);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Zen Maru Gothic', sans-serif !important; }
         body { margin: 0; background-color: var(--bg-base); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-        .content-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 120px; }
+        .content-scroll-area { flex: 1; overflow-y: auto; padding-bottom: 120px; }
         .page { display: none; padding: 15px; }
         .page.active { display: block; }
 
-        /* 6. 首頁 Title 更圓矮、間距拉開 */
-        .header { padding: 40px 20px 15px; text-align: center; }
+        /* 6. 標題：更圓矮、間距拉開 */
+        .header { padding: 40px 20px 10px; text-align: center; }
         .header h1 { 
-            font-size: 52px; font-weight: 900; margin: 0; letter-spacing: -1px; 
-            line-height: 0.8; 
-            transform: scale(1.15, 0.75); /* 更矮更寬更圓 */
-            display: inline-block;
+            font-size: 55px; font-weight: 900; margin: 0; letter-spacing: -2px; 
+            line-height: 0.7; transform: scale(1.1, 0.75); display: inline-block; /* 更圓矮 */
             text-shadow: 4px 4px 0px rgba(74, 63, 53, 0.1);
         }
-        .header p { font-size: 14px; font-weight: 900; margin-top: 10px; color: var(--accent); letter-spacing: 1px; }
+        .header p { font-size: 15px; font-weight: 900; margin-top: 15px; color: var(--accent); } /* 間距開一點 */
 
-        /* 6. 下方區塊文字加大、靠中對齊 */
-        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
-        .card-menu { background: #fff; border: var(--border-thick); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; box-shadow: var(--shadow); position: relative; align-items: center; text-align: center; }
-        .card-full { grid-column: span 2; flex-direction: row; justify-content: center; padding: 22px; }
-        .card-menu span[style*="font-size:18px"] { font-size: 21px !important; } /* 加大文字 */
-        .card-menu span[style*="font-size:20px"] { font-size: 24px !important; }
+        /* 首頁區塊文字加大、靠中對齊 */
+        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .card-menu { background: #fff; border: var(--border-thick); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: var(--shadow); }
+        .card-full { grid-column: span 2; flex-direction: row; padding: 22px; }
+        .card-menu span { font-size: 20px; font-weight: 900; } /* 文字加大 */
 
-        /* 3 & 4. 右上角橘色 + 按鈕設計 */
-        .add-btn-circle { 
-            width: 40px; height: 40px; background: var(--accent); border: var(--border-thick); 
-            border-radius: 50%; color: #fff; font-size: 28px; font-weight: 900;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 2px 2px 0px var(--text-main);
-        }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        /* 3 & 4. 右上角橘色 + 按鈕 */
+        .plus-btn-row { display: flex; justify-content: flex-end; margin: 10px 0; }
+        .plus-btn { width: 45px; height: 45px; background: var(--accent); border: var(--border-thick); border-radius: 50%; color: #fff; font-size: 28px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); }
 
-        /* 1 & 2. 交通區塊重新排版 & 文字加大 */
-        .transport-ticket { background: #fff; border: var(--border-thick); border-radius: 12px; margin-bottom: 10px; display: flex; overflow: hidden; box-shadow: var(--shadow); height: 75px; }
+        /* 1 & 2. 交通區塊優化：排版與文字加大 */
+        .transport-ticket { background: #fff; border: var(--border-thick); border-radius: 12px; margin-bottom: 10px; display: flex; overflow: hidden; }
         .ticket-left { padding: 10px; background: var(--text-main); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 65px; border-right: 2px dashed rgba(255,255,255,0.3); }
-        .ticket-right { flex: 1; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; }
-        .trans-info-group { display: flex; align-items: center; gap: 12px; flex: 1; } /* 左右排列 */
-        .trans-no { font-size: 22px; font-weight: 900; }
-        .trans-name { font-size: 16px; font-weight: 700; color: var(--text-light); }
-        .trans-action-group { display: flex; align-items: center; gap: 15px; } /* 左右排列 */
-        .trans-time { font-size: 20px; font-weight: 900; color: var(--accent); }
-
-        /* 5. 記帳頁文字往中間對齊一點 */
-        .exp-item { flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 15px; margin-bottom: 8px; }
-        .exp-left-group { display: flex; flex-direction: column; padding-left: 15px; } /* 往內縮一點 */
+        .ticket-right { flex: 1; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .trans-info-group { display: flex; align-items: center; gap: 10px; flex: 1; } /* 左右排列 */
+        .trans-no { font-size: 20px; font-weight: 900; }
+        .trans-name { font-size: 15px; font-weight: 700; color: var(--text-light); }
+        .trans-action-group { display: flex; align-items: center; gap: 12px; }
+        .trans-time { font-size: 18px; font-weight: 900; color: var(--accent); }
 
         /* 行程時間軸 */
-        .timeline-container { position: relative; padding-left: 30px; border-left: 3px solid var(--text-main); margin-left: 10px; margin-top: 10px; }
+        .timeline-container { position: relative; padding-left: 30px; border-left: 3px solid var(--text-main); margin-left: 10px; }
         .timeline-item { position: relative; margin-bottom: 8px; }
-        .timeline-dot { position: absolute; left: -39px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: #fff; border: 3px solid var(--accent); border-radius: 50%; z-index: 2; }
-        .sch-card-content { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 12px 15px; background:#fff; border:var(--border-thick); border-radius:15px; }
-        .sch-time { color: var(--accent); font-weight: 900; font-size: 16px; margin-right: 12px; min-width: 50px; }
-        .sch-name { font-size: 19px; font-weight: 900; flex: 1; }
+        .timeline-dot { position: absolute; left: -39px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: #fff; border: 3px solid var(--accent); border-radius: 50%; }
+        .sch-card-content { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 15px; background: #fff; border: var(--border-thick); border-radius: 20px; }
 
-        /* 其他通用 */
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-btn { aspect-ratio: 1/1; border: var(--border-thick); border-radius: 10px; background: #fff; font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+        /* 5. 記帳頁：左側文字往中間對齊一點 */
+        .exp-item { flex-direction: row; justify-content: space-between; align-items: center; padding: 8px 15px; margin-bottom: 8px; }
+        .exp-left-group { padding-left: 10px; } /* 往中間對齊 */
+
+        /* 底部導覽與其他元件 */
         .nav-bar { position: fixed; bottom: 15px; left: 15px; right: 15px; height: 75px; background: #fff; border: var(--border-thick); border-radius: 22px; display: flex; justify-content: space-around; align-items: center; z-index: 2000; }
-        .nav-item { flex: 1; text-align: center; color: var(--text-main); font-size: 16px; font-weight: 900; }
+        .nav-item { flex: 1; text-align: center; font-weight: 900; color: var(--text-main); }
         .nav-item.active { color: var(--accent); }
+        .calc-btn { aspect-ratio: 1/1; border: var(--border-thick); border-radius: 10px; background: #fff; font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+        .curr-btn { flex: 1; padding: 10px; border: var(--border-thick); border-radius: 50px; font-weight: 900; background: #fff; }
+        .curr-btn.active { background: var(--accent); color: #fff; }
         .custom-prompt { position: fixed; inset: 0; background: rgba(74,63,53,0.7); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 25px; }
         .custom-prompt.active { display: flex; }
     </style>
@@ -93,67 +83,74 @@
             <div class="dashboard">
                 <div class="card-menu card-full" onclick="showPage('schedule')">
                     <img style="width:42px; height:42px; margin-right:15px;" src="https://img.icons8.com/ios-filled/100/d96d32/calendar-2.png">
-                    <div><span style="font-size:20px; font-weight:900;">ITINERARY</span><br><span style="font-size:14px; font-weight:700; color:var(--text-light)">行程規劃</span></div>
+                    <div><span style="font-size:22px;">ITINERARY</span><br><span style="font-size:14px; color:var(--text-light)">行程規劃</span></div>
                 </div>
                 <div class="card-menu" onclick="showPage('wallet')">
-                    <img style="width:34px; height:34px; margin-bottom:8px;" src="https://img.icons8.com/ios-filled/100/4a3f35/wallet.png">
-                    <span style="font-size:18px; font-weight:900;">WALLET</span><span style="font-size:12px; font-weight:700;">匯率記帳</span>
+                    <img style="width:34px; margin-bottom:5px;" src="https://img.icons8.com/ios-filled/100/4a3f35/wallet.png">
+                    <span>WALLET</span><small>匯率記帳</small>
                 </div>
                 <div class="card-menu" onclick="showPage('gift')">
-                    <img style="width:34px; height:34px; margin-bottom:8px;" src="https://img.icons8.com/ios-filled/100/4a3f35/shopping-bag.png">
-                    <span style="font-size:18px; font-weight:900;">GIFT</span><span style="font-size:12px; font-weight:700;">伴手禮</span>
+                    <img style="width:34px; margin-bottom:5px;" src="https://img.icons8.com/ios-filled/100/4a3f35/shopping-bag.png">
+                    <span>GIFT</span><small>伴手禮</small>
                 </div>
-                </div>
+            </div>
         </div>
 
         <div id="schedule" class="page">
-            <div class="section-header">
-                <div class="date-tabs-row" style="flex:1; display:flex; gap:8px; margin-bottom:0;">
-                    <div class="date-tab active" style="background:var(--accent); color:#fff; flex:1; padding:8px; border:var(--border-thick); border-radius:12px; text-align:center; font-weight:900;" onclick="switchDay(1, this)">Day 1</div>
-                    <div class="date-tab" style="background:#fff; flex:1; padding:8px; border:var(--border-thick); border-radius:12px; text-align:center; font-weight:900;" onclick="switchDay(2, this)">Day 2</div>
-                    <div class="date-tab" style="background:#fff; flex:1; padding:8px; border:var(--border-thick); border-radius:12px; text-align:center; font-weight:900;" onclick="switchDay(3, this)">Day 3</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <div style="display:flex; gap:5px; flex:1;">
+                    <div class="curr-btn active" style="padding:8px; text-align:center; font-size:14px;" onclick="switchDay(1, this)">D1</div>
+                    <div class="curr-btn" style="padding:8px; text-align:center; font-size:14px;" onclick="switchDay(2, this)">D2</div>
+                    <div class="curr-btn" style="padding:8px; text-align:center; font-size:14px;" onclick="switchDay(3, this)">D3</div>
                 </div>
+                <div class="plus-btn" onclick="openPrompt('transport')" style="margin-left:15px;">+</div>
             </div>
             
             <div id="transport-list"></div>
-            
-            <div style="display:flex; justify-content:flex-end; margin: 15px 0 5px;">
-                <div class="add-btn-circle" onclick="openPrompt('schedule')">+</div>
+
+            <div class="plus-btn-row">
+                <div class="plus-btn" onclick="openPrompt('schedule')">+</div>
             </div>
 
             <div class="timeline-container" id="schedule-list"></div>
         </div>
 
         <div id="gift" class="page">
-            <div class="section-header">
-                <h2 style="font-size:26px; font-weight:900; margin:0;">GIFT</h2>
-                <div class="add-btn-circle" onclick="openPrompt('gift')">+</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="font-size:24px; font-weight:900;">GIFT</h2>
+                <div class="plus-btn" onclick="openPrompt('gift')">+</div>
             </div>
             <div id="gift-list"></div>
         </div>
 
         <div id="wallet" class="page">
-            <div class="total-banner" style="background:var(--text-main); color:#fff; padding:15px; border-radius:15px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:700;">TOTAL</span><span id="wallet-total" style="font-size:26px; font-weight:900;">$ 0</span>
-            </div>
-            <div style="background:#fff; border:var(--border-thick); border-radius:20px; padding:15px; margin-bottom:15px;">
+            <div class="card-menu" style="margin-bottom:15px; padding:15px; align-items:stretch;">
                 <div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <button id="btn-twd" class="date-tab active" style="background:var(--accent); color:#fff; flex:1; border:var(--border-thick); border-radius:50px; padding:8px; font-weight:900;" onclick="setCurrency('TWD')">TWD</button>
-                    <button id="btn-cny" class="date-tab" style="background:#fff; flex:1; border:var(--border-thick); border-radius:50px; padding:8px; font-weight:900;" onclick="setCurrency('CNY')">CNY</button>
+                    <button id="btn-twd" class="curr-btn active" onclick="setCurrency('TWD')">TWD</button>
+                    <button id="btn-cny" class="curr-btn" onclick="setCurrency('CNY')">CNY</button>
                 </div>
-                <input type="text" id="exp-name" placeholder="項目內容..." style="width:100%; border:none; border-bottom:2px solid #eee; padding:5px 0; font-size:18px; font-weight:900; outline:none;">
-                <div id="calc-num" style="font-size:35px; font-weight:900; text-align:right;">0</div>
+                <input type="text" id="exp-name" placeholder="項目內容..." style="border:none; border-bottom:2px solid #eee; font-size:18px; font-weight:900; margin-bottom:5px; outline:none;">
+                <div id="calc-num" style="font-size:32px; font-weight:900; text-align:right;">0</div>
                 <div class="calc-grid">
                     <button class="calc-btn" onclick="press('7')">7</button><button class="calc-btn" onclick="press('8')">8</button><button class="calc-btn" onclick="press('9')">9</button><button class="calc-btn" style="color:var(--accent)" onclick="press('C')">C</button>
-                    <button class="calc-btn" onclick="press('4')">4</button><button class="calc-btn" onclick="press('5')">5</button><button class="calc-btn" onclick="press('6')">6</button><button class="calc-btn" onclick="press('0')">0</button>
-                    <button class="calc-btn" onclick="press('1')">1</button><button class="calc-btn" onclick="press('2')">2</button><button class="calc-btn" onclick="press('3')">3</button><button class="calc-btn" style="background:var(--accent); color:#fff; grid-column:span 1;" onclick="saveExp()">✓</button>
+                    <button class="calc-btn" style="grid-column: span 4; height:45px; margin-top:5px; background:var(--accent); color:#fff;" onclick="saveExp()">儲存帳目</button>
                 </div>
             </div>
             <div id="wallet-list"></div>
         </div>
     </div>
 
-    <div id="custom-prompt" class="custom-prompt">...</div>
+    <div id="custom-prompt" class="custom-prompt">
+        <div style="background:var(--bg-base); border:var(--border-thick); border-radius:24px; width:300px; padding:20px;">
+            <h3 id="prompt-title">新增</h3>
+            <div id="transport-fields" style="display:none;">
+                <input type="text" id="trans-no" placeholder="班次 (ex: B123)" style="width:100%; padding:10px; margin-bottom:10px; border:var(--border-thick); border-radius:8px;">
+            </div>
+            <input type="text" id="prompt-input" placeholder="名稱" style="width:100%; padding:10px; margin-bottom:10px; border:var(--border-thick); border-radius:8px;">
+            <input type="text" id="prompt-time" placeholder="時間 (12:00)" style="width:100%; padding:10px; margin-bottom:15px; border:var(--border-thick); border-radius:8px;">
+            <div style="display:flex; gap:10px;"><button onclick="closePrompt()" style="flex:1; padding:10px; border-radius:8px;">取消</button><button onclick="handlePromptConfirm()" style="flex:1; background:var(--accent); color:#fff; border:none; border-radius:8px;">確定</button></div>
+        </div>
+    </div>
 
     <nav class="nav-bar">
         <div class="nav-item active" onclick="showPage('home')">首頁</div>
@@ -163,18 +160,32 @@
     </nav>
 
     <script>
-        // ... (省略重複的基礎邏輯) ...
+        let curPage = 'home', curDay = 1, calcVal = '', curCurrency = 'TWD', pendingPage = '';
+        const RATE = 4.5;
+        let db = { schedule: [], transport: [], gift: [], wallet: [] };
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.getElementById('home-header').style.display = (id === 'home') ? 'block' : 'none';
+            render();
+        }
+
+        function switchDay(day, el) {
+            curDay = day;
+            document.querySelectorAll('#schedule .curr-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            render();
+        }
+
         function render() {
             const list = document.getElementById(curPage + '-list');
             if (curPage === 'schedule') {
                 const transArea = document.getElementById('transport-list');
                 const dayTrans = db.transport.filter(t => t.day === curDay);
-                // 1 & 2. 交通重新排列與加大
-                transArea.innerHTML = dayTrans.map(t => `
+                transArea.innerHTML = dayTrans.map((t, idx) => `
                     <div class="transport-ticket">
-                        <div class="ticket-left">
-                            <img src="https://img.icons8.com/ios-filled/50/ffffff/${t.type==='airplane'?'airplane-take-off':'ferry'}.png" style="width:28px;">
-                        </div>
+                        <div class="ticket-left"><div style="font-size:12px; font-weight:900;">TRANS</div></div>
                         <div class="ticket-right">
                             <div class="trans-info-group">
                                 <span class="trans-no">${t.no}</span>
@@ -182,28 +193,49 @@
                             </div>
                             <div class="trans-action-group">
                                 <span class="trans-time">${t.time}</span>
-                                <div onclick="delTransport(${db.transport.indexOf(t)})" style="color:#ccc; font-size:22px;">✕</div>
+                                <span onclick="delItem('transport', ${idx})" style="color:#ccc">✕</span>
                             </div>
                         </div>
                     </div>`).join('');
                 
-                const daySch = db.schedule.filter(s => s.day === curDay).sort((a,b) => a.time.localeCompare(b.time));
-                list.innerHTML = daySch.map(s => `<div class="timeline-item"><div class="timeline-dot"></div><div class="sch-card-content"><div><span class="sch-time">${s.time}</span><span class="sch-name">${s.name}</span></div><div style="color:#ccc" onclick="delItem('schedule', ${db.schedule.indexOf(s)})">✕</div></div></div>`).join('');
+                const daySch = db.schedule.filter(s => s.day === curDay);
+                list.innerHTML = daySch.map((s, idx) => `
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="sch-card-content">
+                            <div style="display:flex; align-items:center;"><span class="trans-time" style="margin-right:15px;">${s.time}</span><span style="font-size:18px; font-weight:900;">${s.name}</span></div>
+                            <span onclick="delItem('schedule', ${idx})" style="color:#ccc">✕</span>
+                        </div>
+                    </div>`).join('');
             } else if (curPage === 'wallet') {
                 list.innerHTML = db.wallet.map((i, idx) => `
-                    <div class="card-menu exp-item" style="align-items:center; flex-direction:row;">
-                        <div class="exp-left-group">
-                            <b style="font-size:19px; font-weight:900;">${i.name}</b>
-                            <small style="color:var(--text-light); font-weight:900;">${i.orig}</small>
-                        </div>
-                        <div class="exp-right-group">
-                            <b style="color:var(--accent); font-size:22px; font-weight:900;">$ ${i.twd}</b>
-                            <div style="color:#ccc; font-size:20px;" onclick="delItem('wallet', ${idx})">✕</div>
-                        </div>
+                    <div class="card-menu exp-item" style="flex-direction:row; align-items:center;">
+                        <div class="exp-left-group"><b>${i.name}</b><br><small>${i.orig}</small></div>
+                        <div style="display:flex; align-items:center; gap:15px;"><b style="color:var(--accent); font-size:20px;">$${i.twd}</b><span onclick="delItem('wallet', ${idx})" style="color:#ccc">✕</span></div>
                     </div>`).join('');
             }
         }
-        // ... 其餘邏輯保持不變 ...
+
+        function openPrompt(type) { 
+            pendingPage = type; 
+            document.getElementById('transport-fields').style.display = (type==='transport') ? 'block' : 'none';
+            document.getElementById('custom-prompt').classList.add('active'); 
+        }
+        function closePrompt() { document.getElementById('custom-prompt').classList.remove('active'); }
+        function handlePromptConfirm() {
+            const name = document.getElementById('prompt-input').value;
+            const time = document.getElementById('prompt-time').value || "12:00";
+            if(pendingPage === 'transport') db.transport.push({ day: curDay, no: document.getElementById('trans-no').value, name, time });
+            else if(pendingPage === 'schedule') db.schedule.push({ day: curDay, name, time });
+            else if(pendingPage === 'gift') db.gift.push({ name, done: false });
+            render(); closePrompt();
+        }
+        function setCurrency(curr) { curCurrency = curr; document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active')); document.getElementById('btn-'+curr.toLowerCase()).classList.add('active'); }
+        function press(k) { if(k==='C') calcVal=''; else calcVal+=k; document.getElementById('calc-num').innerText = calcVal || '0'; }
+        function saveExp() { db.wallet.unshift({ name: document.getElementById('exp-name').value || '支出', twd: calcVal, orig: calcVal }); calcVal=''; render(); }
+        function delItem(t, idx) { db[t].splice(idx,1); render(); }
+        
+        window.onload = () => showPage('home');
     </script>
 </body>
 </html>
