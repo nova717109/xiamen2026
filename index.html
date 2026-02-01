@@ -23,7 +23,7 @@
         .page { display: none; padding: 15px; }
         .page.active { display: block; }
 
-        /* 1. 首頁 Title 胖胖體 */
+        /* Title Style */
         .header { padding: 35px 20px 0px; text-align: center; }
         .header h1 { 
             font-size: 46px; font-weight: 900; margin: 0; letter-spacing: -1px; 
@@ -31,14 +31,13 @@
         }
         .header p { font-size: 14px; font-weight: 900; margin-top: 2px; color: var(--accent); }
 
-        /* 首頁經典佈局 */
+        /* Dashboard */
         .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
         .card-menu { background: #fff; border: var(--border-thick); border-radius: 20px; padding: 18px 15px; display: flex; flex-direction: column; box-shadow: var(--shadow); }
         .card-full { grid-column: span 2; flex-direction: row; align-items: center; padding: 22px; }
         .icon-box { width: 34px; height: 34px; margin-bottom: 8px; }
-        .card-full .icon-box { margin-bottom: 0; margin-right: 18px; width: 42px; height: 42px; }
 
-        /* 2. 交通票券樣式 */
+        /* 交通票券優化 */
         .transport-ticket { 
             background: #fff; border: var(--border-thick); border-radius: 12px; 
             margin-bottom: 10px; position: relative; display: flex; overflow: hidden; box-shadow: var(--shadow);
@@ -46,50 +45,51 @@
         .ticket-left { 
             padding: 12px; background: var(--text-main); color: #fff; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-width: 65px; border-right: 2px dashed rgba(255,255,255,0.3);
+            min-width: 70px; border-right: 2px dashed rgba(255,255,255,0.3);
         }
-        .ticket-right { flex: 1; padding: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .ticket-no { font-size: 18px; font-weight: 900; }
-        .ticket-time { font-size: 16px; font-weight: 900; color: var(--accent); }
+        .ticket-right { flex: 1; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .ticket-no { font-size: 20px; font-weight: 900; }
+        .ticket-time { font-size: 20px; font-weight: 900; color: var(--accent); }
 
-        /* 3. 彈窗選擇器樣式 */
-        .icon-selector { display: flex; gap: 15px; justify-content: center; margin-bottom: 15px; }
-        .type-btn { 
-            width: 60px; height: 60px; border: var(--border-thick); border-radius: 15px; 
-            background: #fff; display: flex; align-items: center; justify-content: center;
+        /* 圓形新增按鈕容器 */
+        .action-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .plus-btn-circle {
+            width: 48px; height: 48px; background: var(--accent); border: var(--border-thick); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 3px 3px 0px var(--text-main); cursor: pointer;
         }
-        .type-btn.active { background: var(--accent); }
-        .type-btn img { width: 30px; }
+        .plus-btn-circle::after { content: "+"; color: #fff; font-size: 28px; font-weight: 900; }
+        .plus-btn-circle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px var(--text-main); }
 
-        /* 4. 勾選框 */
-        .check-box { 
-            width: 24px; height: 24px; border: var(--border-thick); border-radius: 6px; 
-            margin-right: 12px; flex-shrink: 0; background: #fff; display: flex; align-items: center; justify-content: center;
+        /* 行程卡片橫向排列優化 */
+        .schedule-card {
+            flex-direction: row !important; align-items: center !important; justify-content: space-between !important;
+            padding: 20px 15px !important;
         }
-        .checked .check-box { background: var(--accent); }
-        .checked .check-box::after { content: "✓"; color: #fff; font-weight: 900; }
-        .checked span { text-decoration: line-through; color: var(--text-light); }
-
-        /* 5. 記帳頁計算機修復 */
-        .calc-container { background: #fff; border: var(--border-thick); padding: 15px; border-radius: 20px; margin-bottom: 15px; }
-        .curr-btn { flex: 1; padding: 8px; border: var(--border-thick); border-radius: 50px; font-weight: 900; background: #fff; }
-        .curr-btn.active { background: var(--accent); color: #fff; }
-        
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .calc-btn { 
-            aspect-ratio: 1/1; border: var(--border-thick); border-radius: 10px; background: #fff; 
-            font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; 
-        }
-        .ok-btn { grid-column: span 1; background: var(--accent); color: #fff; }
+        .sch-text-group { display: flex; align-items: center; gap: 15px; }
+        .sch-time { font-size: 20px; font-weight: 900; color: var(--accent); min-width: 60px; }
+        .sch-name { font-size: 20px; font-weight: 900; }
 
         /* 導覽列 */
         .nav-bar { position: fixed; bottom: 15px; left: 15px; right: 15px; height: 75px; background: #fff; border: var(--border-thick); border-radius: 22px; display: flex; justify-content: space-around; align-items: center; z-index: 2000; }
         .nav-item { flex: 1; text-align: center; color: var(--text-main); font-size: 16px; font-weight: 900; }
         .nav-item.active { color: var(--accent); }
 
-        /* 彈窗隱藏修正 */
+        /* 其他通用組件 */
+        .check-box { width: 24px; height: 24px; border: var(--border-thick); border-radius: 6px; margin-right: 12px; flex-shrink: 0; background: #fff; display: flex; align-items: center; justify-content: center; }
+        .checked .check-box { background: var(--accent); }
+        .checked .check-box::after { content: "✓"; color: #fff; font-weight: 900; }
+        .checked span { text-decoration: line-through; color: var(--text-light); }
+
         .custom-prompt { position: fixed; inset: 0; background: rgba(74,63,53,0.7); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 25px; }
         .custom-prompt.active { display: flex; }
+
+        /* 記帳頁 */
+        .calc-container { background: #fff; border: var(--border-thick); padding: 15px; border-radius: 20px; margin-bottom: 15px; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .calc-btn { aspect-ratio: 1/1; border: var(--border-thick); border-radius: 10px; background: #fff; font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+        .curr-btn { flex: 1; padding: 8px; border: var(--border-thick); border-radius: 50px; font-weight: 900; background: #fff; }
+        .curr-btn.active { background: var(--accent); color: #fff; }
     </style>
 </head>
 <body>
@@ -131,10 +131,32 @@
                 <div class="date-tab" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900; background:#fff;" onclick="switchDay(2, this)">Day 2</div>
                 <div class="date-tab" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900; background:#fff;" onclick="switchDay(3, this)">Day 3</div>
             </div>
+            
             <div id="transport-list"></div>
-            <button onclick="openPrompt('transport')" style="width:100%; padding:10px; background:none; border:2px dashed var(--text-light); border-radius:12px; color:var(--text-light); font-weight:900; margin-bottom:20px;">+ 新增交通票券</button>
+            
+            <button onclick="openPrompt('transport')" style="width:100%; padding:10px; background:none; border:2px dashed var(--text-light); border-radius:12px; color:var(--text-light); font-weight:900; margin-bottom:10px;">+ 新增交通票券</button>
+            
+            <div style="display:flex; justify-content:flex-end; padding: 10px 0;">
+                <div class="plus-btn-circle" onclick="openPrompt('schedule')"></div>
+            </div>
+
             <div class="timeline-container" id="schedule-list" style="position: relative; padding-left: 30px; border-left: 3px solid var(--text-main); margin-left: 10px;"></div>
-            <button onclick="openPrompt('schedule')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增行程</button>
+        </div>
+
+        <div id="gift" class="page">
+            <div class="action-header">
+                <h2 style="font-size:26px; font-weight:900; margin:0;">GIFT</h2>
+                <div class="plus-btn-circle" onclick="openPrompt('gift')"></div>
+            </div>
+            <div id="gift-list"></div>
+        </div>
+
+        <div id="luggage" class="page">
+            <div class="action-header">
+                <h2 style="font-size:26px; font-weight:900; margin:0;">PACKING</h2>
+                <div class="plus-btn-circle" onclick="openPrompt('luggage')"></div>
+            </div>
+            <div id="luggage-list"></div>
         </div>
 
         <div id="wallet" class="page">
@@ -153,25 +175,22 @@
                     <button class="calc-btn" onclick="press('7')">7</button><button class="calc-btn" onclick="press('8')">8</button><button class="calc-btn" onclick="press('9')">9</button><button class="calc-btn" style="color:var(--accent)" onclick="press('C')">C</button>
                     <button class="calc-btn" onclick="press('4')">4</button><button class="calc-btn" onclick="press('5')">5</button><button class="calc-btn" onclick="press('6')">6</button><button class="calc-btn" onclick="press('0')">0</button>
                     <button class="calc-btn" onclick="press('1')">1</button><button class="calc-btn" onclick="press('2')">2</button><button class="calc-btn" onclick="press('3')">3</button><button class="calc-btn" onclick="press('.')">.</button>
-                    <button class="calc-btn ok-btn" style="grid-column: span 4; aspect-ratio: auto; height: 50px; margin-top: 5px;" onclick="saveExp()">OK 儲存帳目</button>
+                    <button class="calc-btn ok-btn" style="grid-column: span 4; aspect-ratio: auto; height: 50px; margin-top: 5px; background:var(--accent); color:#fff; border:var(--border-thick); border-radius:10px; font-weight:900;" onclick="saveExp()">OK 儲存帳目</button>
                 </div>
             </div>
             <div id="wallet-list"></div>
         </div>
-
-        <div id="gift" class="page"><h2 style="font-size:26px; font-weight:900;">GIFT</h2><div id="gift-list"></div><button onclick="openPrompt('gift')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增項目</button></div>
-        <div id="luggage" class="page"><h2 style="font-size:26px; font-weight:900;">PACKING</h2><div id="luggage-list"></div><button onclick="openPrompt('luggage')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增項目</button></div>
     </div>
 
     <div id="custom-prompt" class="custom-prompt">
         <div style="background: var(--bg-base); border: var(--border-thick); border-radius: 24px; width: 100%; max-width: 320px; padding: 25px;">
             <h3 id="prompt-title" style="margin-top:0">新增項目</h3>
             <div id="transport-fields" style="display:none;">
-                <div class="icon-selector">
-                    <div id="type-air" class="type-btn active" onclick="setTransType('airplane')"><img src="https://img.icons8.com/ios-filled/100/4a3f35/airplane-take-off.png"></div>
-                    <div id="type-ferry" class="type-btn" onclick="setTransType('ferry')"><img src="https://img.icons8.com/ios-filled/100/4a3f35/ferry.png"></div>
+                <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 15px;">
+                    <div id="type-air" class="curr-btn" style="text-align:center; padding:10px;" onclick="setTransType('airplane')">AIR</div>
+                    <div id="type-ferry" class="curr-btn" style="text-align:center; padding:10px;" onclick="setTransType('ferry')">SEA</div>
                 </div>
-                <input type="text" id="trans-no" placeholder="班次編號 (如 BR123)" style="width:100%; padding:12px; border:var(--border-thick); border-radius:10px; margin-bottom:12px;">
+                <input type="text" id="trans-no" placeholder="編號 (如 BR123)" style="width:100%; padding:12px; border:var(--border-thick); border-radius:10px; margin-bottom:12px;">
             </div>
             <input type="text" id="prompt-input" placeholder="名稱..." style="width:100%; padding:12px; border:var(--border-thick); border-radius:10px; margin-bottom:12px;">
             <input type="text" id="prompt-time" placeholder="時間 (如 10:30)" style="width:100%; padding:12px; border:var(--border-thick); border-radius:10px; margin-bottom:20px;">
@@ -222,8 +241,8 @@
 
         function setTransType(type) {
             pendingTransType = type;
-            document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('type-' + (type==='airplane'?'air':'ferry')).classList.add('active');
+            document.getElementById('type-air').classList.toggle('active', type==='airplane');
+            document.getElementById('type-ferry').classList.toggle('active', type==='ferry');
         }
 
         function setCurrency(curr) { curCurrency = curr; document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active')); document.getElementById('btn-'+curr.toLowerCase()).classList.add('active'); updateCalcDisplay(); }
@@ -238,12 +257,18 @@
                 transArea.innerHTML = dayTrans.map(t => `
                     <div class="transport-ticket">
                         <div class="ticket-left">
-                            <img src="https://img.icons8.com/ios-filled/50/ffffff/${t.type==='airplane'?'airplane-take-off':'ferry'}.png" style="width:25px;">
-                            <div style="font-size:10px; font-weight:900; margin-top:4px;">${t.type==='airplane'?'AIR':'SEA'}</div>
+                            <img src="https://img.icons8.com/ios-filled/50/ffffff/${t.type==='airplane'?'airplane-take-off':'passenger-ship'}.png" style="width:30px;">
+                            <div style="font-size:12px; font-weight:900; margin-top:4px;">${t.type==='airplane'?'AIR':'SEA'}</div>
                         </div>
                         <div class="ticket-right">
-                            <div><div class="ticket-no">${t.no}</div><div style="font-size:12px; font-weight:700; color:var(--text-light)">${t.name}</div></div>
-                            <div style="text-align:right"><div class="ticket-time">${t.time}</div><div onclick="delTransport(${db.transport.indexOf(t)})" style="color:#ccc; font-size:11px;">DEL</div></div>
+                            <div style="display:flex; flex-direction:column;">
+                                <div class="ticket-no">${t.no}</div>
+                                <div style="font-size:15px; font-weight:700; color:var(--text-light)">${t.name}</div>
+                            </div>
+                            <div style="text-align:right">
+                                <div class="ticket-time">${t.time}</div>
+                                <div onclick="delTransport(${db.transport.indexOf(t)})" style="color:#ccc; font-size:11px; margin-top:5px;">DEL</div>
+                            </div>
                         </div>
                     </div>
                 `).join('');
@@ -251,10 +276,13 @@
                 const daySch = db.schedule.filter(s => s.day === curDay).sort((a,b) => a.time.localeCompare(b.time));
                 list.innerHTML = daySch.map(s => `
                     <div style="position:relative; margin-bottom:20px;">
-                        <div style="position:absolute; left:-39px; top:8px; width:14px; height:14px; background:#fff; border:3px solid var(--accent); border-radius:50%; z-index:2;"></div>
-                        <div class="card-menu" style="flex-direction:row; align-items:center; justify-content:space-between;">
-                            <div><div style="color:var(--accent); font-weight:900; font-size:14px;">${s.time}</div><div style="font-size:18px; font-weight:900;">${s.name}</div></div>
-                            <div style="color:#ccc" onclick="delItem('schedule', ${db.schedule.indexOf(s)})">✕</div>
+                        <div style="position:absolute; left:-39px; top:28px; width:14px; height:14px; background:#fff; border:3px solid var(--accent); border-radius:50%; z-index:2;"></div>
+                        <div class="card-menu schedule-card">
+                            <div class="sch-text-group">
+                                <div class="sch-time">${s.time}</div>
+                                <div class="sch-name">${s.name}</div>
+                            </div>
+                            <div style="color:#ccc; font-size:20px;" onclick="delItem('schedule', ${db.schedule.indexOf(s)})">✕</div>
                         </div>
                     </div>
                 `).join('');
@@ -271,8 +299,8 @@
             } else if (list) {
                 list.innerHTML = db[curPage].map((i, idx) => `
                     <div class="card-menu ${i.done?'checked':''}" style="flex-direction:row; align-items:center; margin-bottom:10px;" onclick="toggleCheck('${curPage}', ${idx})">
-                        <div class="check-box"></div><span style="flex:1; font-weight:900; font-size:18px;">${i.name}</span>
-                        <div style="color:#ccc" onclick="event.stopPropagation(); delItem('${curPage}', ${idx})">✕</div>
+                        <div class="check-box"></div><span style="flex:1; font-weight:900; font-size:20px;">${i.name}</span>
+                        <div style="color:#ccc; font-size:20px;" onclick="event.stopPropagation(); delItem('${curPage}', ${idx})">✕</div>
                     </div>
                 `).join('');
             }
@@ -291,6 +319,7 @@
             document.getElementById('transport-fields').style.display = (type==='transport') ? 'block' : 'none';
             document.getElementById('prompt-time').style.display = (type==='gift'||type==='luggage') ? 'none' : 'block';
             document.getElementById('custom-prompt').classList.add('active');
+            if(type === 'transport') setTransType('airplane');
         }
         function closePrompt() { document.getElementById('custom-prompt').classList.remove('active'); }
         function handlePromptConfirm() {
