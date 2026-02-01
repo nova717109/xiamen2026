@@ -7,13 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-base: #f7f3ee;
-            --text-main: #222;
-            --text-light: #777;
-            --accent: #d9a081;
+            /* 奶茶色調核心配色 */
+            --bg-base: #f5f0e9;       /* 奶茶色底 */
+            --text-main: #4a3f35;     /* 深咖啡色文字 */
+            --text-light: #8c7e74;    /* 淺色標註文字 */
+            --accent: #b89376;        /* 焦糖奶茶強調色 */
             --card-bg: #ffffff;
-            --border-thick: 2.5px solid #000;
-            --shadow-bold: 5px 5px 0px #000;
+            --border-style: 1.5px solid #4a3f35; /* 細緻的咖啡色邊框 */
+            --shadow: 0 4px 0px rgba(74, 63, 53, 0.1); /* 輕微柔和陰影 */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Zen Maru Gothic', serif; }
@@ -21,61 +22,61 @@
 
         /* --- Header --- */
         .header { padding: 30px 20px 10px; text-align: center; }
-        .header h2 { font-size: 24px; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .header h2 { font-size: 22px; font-weight: 900; margin: 0; letter-spacing: 2px; color: var(--text-main); }
 
         /* --- Pages --- */
         .page { display: none; flex: 1; overflow-y: auto; padding: 15px 20px 180px; }
-        .page.active { display: block; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- 調整：潮流選單卡片佈局 --- */
+        /* --- 三列佈局選單 --- */
         .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         
         .card-menu { 
-            background: var(--card-bg); border: var(--border-thick); border-radius: 20px; 
-            padding: 20px 15px; display: flex; flex-direction: column; align-items: flex-start; 
-            justify-content: center; position: relative; box-shadow: var(--shadow-bold); 
-            transition: transform 0.1s;
+            background: var(--card-bg); border: var(--border-style); border-radius: 18px; 
+            padding: 18px 15px; display: flex; flex-direction: column; align-items: flex-start; 
+            justify-content: center; position: relative; box-shadow: var(--shadow);
         }
-        .card-menu:active { transform: translate(3px, 3px); box-shadow: none; }
         
-        /* 首頁第一項 (行程) 改為橫跨三列佈局的第一列 */
-        .card-full { grid-column: span 2; flex-direction: row; align-items: center; justify-content: flex-start; padding: 25px; }
+        /* 第一列：橫跨 */
+        .card-full { grid-column: span 2; flex-direction: row; align-items: center; justify-content: flex-start; padding: 22px; }
 
-        /* Icon 縮小並置於左上或左側 */
-        .icon-box { width: 32px; height: 32px; stroke: #000; stroke-width: 2.5; fill: none; margin-bottom: 8px; }
-        .card-full .icon-box { margin-bottom: 0; margin-right: 20px; width: 40px; height: 40px; }
+        /* Icon 縮小化 */
+        .icon-box { width: 28px; height: 28px; stroke: var(--text-main); stroke-width: 2; fill: none; margin-bottom: 10px; }
+        .card-full .icon-box { margin-bottom: 0; margin-right: 15px; width: 32px; height: 32px; }
 
-        /* 英文粗體 + 中文放最下 */
-        .label-en { font-size: 20px; font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 4px; display: block; }
-        .label-zh { font-size: 14px; font-weight: 700; color: var(--text-light); display: block; }
+        /* 標題設計：英文粗體 + 中文放最下 */
+        .label-en { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; line-height: 1.2; display: block; }
+        .label-zh { font-size: 13px; font-weight: 500; color: var(--text-light); display: block; margin-top: 2px; }
 
         /* --- 全域懸浮換算器 --- */
         .float-calc-btn { 
-            position: fixed; right: 20px; bottom: 100px; width: 60px; height: 60px; 
-            background: #d96d32; border: 3px solid #000; color: white; border-radius: 18px; 
+            position: fixed; right: 20px; bottom: 105px; width: 56px; height: 56px; 
+            background: var(--accent); border: 1.5px solid var(--text-main); color: white; border-radius: 16px; 
             display: flex; align-items: center; justify-content: center; 
-            box-shadow: 4px 4px 0px #000; z-index: 200;
+            box-shadow: 0 6px 15px rgba(184, 147, 118, 0.4); z-index: 200;
         }
 
-        /* --- 導覽列 --- */
+        /* --- 導覽列文字 16 --- */
         .nav-bar { 
-            position: fixed; bottom: 20px; left: 15px; right: 15px; height: 75px; 
-            background: #fff; border: var(--border-thick); border-radius: 20px; 
+            position: fixed; bottom: 20px; left: 15px; right: 15px; height: 70px; 
+            background: #fff; border: var(--border-style); border-radius: 20px; 
             display: flex; justify-content: space-around; align-items: center; z-index: 90;
+            box-shadow: 0 10px 25px rgba(74, 63, 53, 0.05);
         }
-        .nav-item { flex: 1; text-align: center; color: #000; font-size: 16px; font-weight: 900; }
-        .nav-item.active { color: #d96d32; }
+        .nav-item { flex: 1; text-align: center; color: var(--text-light); font-size: 16px; font-weight: 900; }
+        .nav-item.active { color: var(--accent); }
 
-        /* --- 記帳清單 --- */
-        .card-item { background: white; border: var(--border-thick); border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; }
+        /* --- 內容清單樣式 --- */
+        .card-item { background: white; border: 1px solid #e0d8cf; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; }
         .amt-tag { text-align: right; flex: 1; }
-        .amt-cny { font-size: 14px; font-weight: 900; }
-        .amt-twd { font-size: 18px; font-weight: 900; color: #d96d32; }
+        .amt-cny { font-size: 13px; color: var(--text-light); }
+        .amt-twd { font-size: 17px; font-weight: 900; color: var(--accent); }
 
-        /* 換算器彈窗 */
-        .quick-calc-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 30px; }
+        /* 換算彈窗 */
+        .quick-calc-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(74, 63, 53, 0.5); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 30px; backdrop-filter: blur(2px); }
         .quick-calc-modal.active { display: flex; }
-        .quick-box { background: white; width: 100%; border: 3px solid #000; border-radius: 25px; padding: 25px; box-shadow: 8px 8px 0px #000; }
+        .quick-box { background: #fff; width: 100%; border-radius: 24px; padding: 25px; border: var(--border-style); }
     </style>
 </head>
 <body>
@@ -85,25 +86,25 @@
     </div>
 
     <button class="float-calc-btn" onclick="toggleQuickCalc()">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="12" y1="6" x2="12" y2="6"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="12" y1="6" x2="12" y2="6"/></svg>
     </button>
 
     <div id="quick-calc" class="quick-calc-modal" onclick="if(event.target==this) toggleQuickCalc()">
         <div class="quick-box">
-            <h3 style="margin:0 0 15px 0; font-weight:900;">EXCHANGE RATE</h3>
-            <input type="number" id="quick-input" placeholder="CNY ¥" oninput="doQuickCalc()" style="width:100%; padding:15px; border:3px solid #000; border-radius:12px; font-size:24px; font-weight:900; outline:none;">
-            <div id="quick-result" style="font-size:32px; font-weight:900; color:#d96d32; margin:15px 0; text-align:center;">≈ NT$ 0</div>
-            <button style="width:100%; background:#000; color:#fff; border:none; padding:15px; border-radius:12px; font-weight:900;" onclick="toggleQuickCalc()">CLOSE</button>
+            <h3 style="margin:0 0 15px 0; font-weight:900;">EXCHANGE</h3>
+            <input type="number" id="quick-input" placeholder="CNY ¥" oninput="doQuickCalc()" style="width:100%; padding:15px; border:1.5px solid #ddd; border-radius:12px; font-size:22px; font-weight:700; outline:none; background:#fcfaf8;">
+            <div id="quick-result" style="font-size:28px; font-weight:900; color:var(--accent); margin:15px 0; text-align:center;">≈ NT$ 0</div>
+            <button style="width:100%; background:var(--text-main); color:#fff; border:none; padding:15px; border-radius:12px; font-weight:900;" onclick="toggleQuickCalc()">CLOSE</button>
         </div>
     </div>
 
     <div id="home" class="page active">
         <div class="dashboard">
             <div class="card-menu card-full" onclick="showPage('schedule')">
-                <svg class="icon-box" viewBox="0 0 24 24"><path d="M19 4H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <svg class="icon-box" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <div>
                     <span class="label-en">ITINERARY</span>
-                    <span class="label-zh">行程表 (2/27-3/1)</span>
+                    <span class="label-zh">行程表規劃</span>
                 </div>
             </div>
 
@@ -140,28 +141,25 @@
     <div id="gift" class="page"><div id="gift-list"></div></div>
     <div id="luggage" class="page"><div id="luggage-list"></div></div>
     <div id="wallet" class="page">
-        <div style="background:white; padding:20px; border-radius:20px; border:2.5px solid #000; box-shadow: 4px 4px 0px #000;">
-            <input type="text" id="exp-name" style="width:100%; border:none; border-bottom:2px solid #000; padding:10px 0; font-size:18px; outline:none; font-weight:900;" placeholder="輸入品項...">
-            <div id="calc-num" style="font-size:48px; font-weight:900; text-align:right; margin:10px 0;">0</div>
-            <div id="calc-twd" style="text-align:right; color:#d96d32; font-weight:900;">≈ NT$ 0</div>
+        <div style="background:white; padding:20px; border-radius:20px; border:var(--border-style); box-shadow: var(--shadow);">
+            <input type="text" id="exp-name" style="width:100%; border:none; border-bottom:1.5px solid #eee; padding:10px 0; font-size:18px; outline:none; font-weight:700;" placeholder="輸入品項...">
+            <div id="calc-num" style="font-size:42px; font-weight:900; text-align:right; margin:10px 0;">0</div>
+            <div id="calc-twd" style="text-align:right; color:var(--accent); font-weight:900;">≈ NT$ 0</div>
             <div class="dashboard" style="grid-template-columns: repeat(4, 1fr); gap:10px;">
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('7')">7</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('8')">8</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('9')">9</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center; color:#d96d32;" onclick="press('C')">C</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('4')">4</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('5')">5</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('6')">6</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center; background:#000; color:#fff; grid-row:span 2;" onclick="saveExp()">ADD</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('1')">1</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('2')">2</button>
-                <button class="card-menu" style="min-height:60px; padding:0; justify-content:center; align-items:center;" onclick="press('3')">3</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; background:#fdfcfb;" onclick="press('7')">7</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; background:#fdfcfb;" onclick="press('8')">8</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; background:#fdfcfb;" onclick="press('9')">9</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; color:var(--accent);" onclick="press('C')">C</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; background:#000; color:#fff; grid-row:span 2;" onclick="saveExp()">ADD</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; background:#fdfcfb;" onclick="press('1')">1</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; background:#fdfcfb;" onclick="press('2')">2</button>
+                <button class="card-menu" style="min-height:55px; padding:0; align-items:center; background:#fdfcfb;" onclick="press('3')">3</button>
             </div>
         </div>
         <div id="wallet-list" style="margin-top:20px;"></div>
     </div>
 
-    <nav class="nav-bar" id="main-nav">
+    <nav class="nav-bar">
         <div class="nav-item active" onclick="showPage('home')">首頁</div>
         <div class="nav-item" onclick="showPage('schedule')">行程</div>
         <div class="nav-item" onclick="showPage('gift')">伴手禮</div>
@@ -207,7 +205,7 @@
             if(curPage === 'wallet') {
                 list.innerHTML = data.map(i => `
                     <div class="card-item">
-                        <b>${i.name}</b>
+                        <div style="font-weight:900;">${i.name}</div>
                         <div class="amt-tag">
                             <div class="amt-cny">¥${i.cny}</div>
                             <div class="amt-twd">NT$ ${i.twd}</div>
@@ -217,8 +215,8 @@
             } else {
                 list.innerHTML = data.map((item, i) => `
                     <div class="card-item">
-                        <div style="flex:1"><b>${item.name}</b></div>
-                        <div onclick="delItem(${i})">✕</div>
+                        <div style="flex:1; font-weight:700;">${item.name}</div>
+                        <div onclick="delItem(${i})" style="color:#ccc;">✕</div>
                     </div>
                 `).join('');
             }
