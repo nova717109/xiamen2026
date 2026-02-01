@@ -23,16 +23,11 @@
         .page { display: none; padding: 15px; }
         .page.active { display: block; }
 
-        /* 1. 首頁 Title 胖胖體優化 */
-        .header { padding: 35px 20px 0px; text-align: center; } /* 間距拉近 */
+        /* 1. 首頁 Title 胖胖體 */
+        .header { padding: 35px 20px 0px; text-align: center; }
         .header h1 { 
-            font-size: 46px; /* 加大 */
-            font-weight: 900; 
-            margin: 0; 
-            letter-spacing: -1px; 
-            line-height: 0.9; /* 矮矮的感覺 */
-            transform: scaleY(0.9); /* 物理性壓扁一點點 */
-            text-shadow: 4px 4px 0px rgba(74, 63, 53, 0.1);
+            font-size: 46px; font-weight: 900; margin: 0; letter-spacing: -1px; 
+            line-height: 0.9; transform: scaleY(0.9); text-shadow: 4px 4px 0px rgba(74, 63, 53, 0.1);
         }
         .header p { font-size: 14px; font-weight: 900; margin-top: 2px; color: var(--accent); }
 
@@ -43,11 +38,10 @@
         .icon-box { width: 34px; height: 34px; margin-bottom: 8px; }
         .card-full .icon-box { margin-bottom: 0; margin-right: 18px; width: 42px; height: 42px; }
 
-        /* 2. 交通票券樣式優化 */
+        /* 2. 交通票券樣式 */
         .transport-ticket { 
             background: #fff; border: var(--border-thick); border-radius: 12px; 
-            margin-bottom: 10px; position: relative; display: flex; overflow: hidden;
-            box-shadow: var(--shadow);
+            margin-bottom: 10px; position: relative; display: flex; overflow: hidden; box-shadow: var(--shadow);
         }
         .ticket-left { 
             padding: 12px; background: var(--text-main); color: #fff; 
@@ -58,40 +52,44 @@
         .ticket-no { font-size: 18px; font-weight: 900; }
         .ticket-time { font-size: 16px; font-weight: 900; color: var(--accent); }
 
-        /* 3. 新增交通視窗 Icon 按鈕 */
+        /* 3. 彈窗選擇器樣式 */
         .icon-selector { display: flex; gap: 15px; justify-content: center; margin-bottom: 15px; }
         .type-btn { 
             width: 60px; height: 60px; border: var(--border-thick); border-radius: 15px; 
             background: #fff; display: flex; align-items: center; justify-content: center;
         }
-        .type-btn.active { background: var(--accent); border-color: var(--text-main); }
+        .type-btn.active { background: var(--accent); }
         .type-btn img { width: 30px; }
 
-        /* 4. 勾選框樣式 */
+        /* 4. 勾選框 */
         .check-box { 
             width: 24px; height: 24px; border: var(--border-thick); border-radius: 6px; 
-            margin-right: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-            transition: 0.2s; background: #fff;
+            margin-right: 12px; flex-shrink: 0; background: #fff; display: flex; align-items: center; justify-content: center;
         }
         .checked .check-box { background: var(--accent); }
         .checked .check-box::after { content: "✓"; color: #fff; font-weight: 900; }
         .checked span { text-decoration: line-through; color: var(--text-light); }
 
-        /* 5. 記帳頁可愛鈕與小計算機 */
-        .calc-container { background: #fff; border: var(--border-thick); padding: 12px; border-radius: 20px; margin-bottom: 15px; transform: scale(0.95); transform-origin: top; }
-        .curr-btn { 
-            flex: 1; padding: 8px; border: var(--border-thick); border-radius: 50px; /* 變圓潤 */
-            font-weight: 900; background: #fff; transition: 0.2s;
-        }
+        /* 5. 記帳頁計算機修復 */
+        .calc-container { background: #fff; border: var(--border-thick); padding: 15px; border-radius: 20px; margin-bottom: 15px; }
+        .curr-btn { flex: 1; padding: 8px; border: var(--border-thick); border-radius: 50px; font-weight: 900; background: #fff; }
         .curr-btn.active { background: var(--accent); color: #fff; }
         
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-btn { aspect-ratio: 1/1; border: var(--border-thick); border-radius: 10px; background: #fff; font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .calc-btn { 
+            aspect-ratio: 1/1; border: var(--border-thick); border-radius: 10px; background: #fff; 
+            font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; 
+        }
+        .ok-btn { grid-column: span 1; background: var(--accent); color: #fff; }
 
         /* 導覽列 */
         .nav-bar { position: fixed; bottom: 15px; left: 15px; right: 15px; height: 75px; background: #fff; border: var(--border-thick); border-radius: 22px; display: flex; justify-content: space-around; align-items: center; z-index: 2000; }
         .nav-item { flex: 1; text-align: center; color: var(--text-main); font-size: 16px; font-weight: 900; }
         .nav-item.active { color: var(--accent); }
+
+        /* 彈窗隱藏修正 */
+        .custom-prompt { position: fixed; inset: 0; background: rgba(74,63,53,0.7); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 25px; }
+        .custom-prompt.active { display: flex; }
     </style>
 </head>
 <body>
@@ -102,7 +100,6 @@
     </div>
 
     <div class="content-scroll-area" id="scroll-root">
-        
         <div id="home" class="page active">
             <div class="dashboard">
                 <div class="card-menu card-full" onclick="showPage('schedule')">
@@ -130,16 +127,14 @@
 
         <div id="schedule" class="page">
             <div class="date-tabs-row" style="display:flex; gap:8px; margin-bottom:15px;">
-                <div class="date-tab active" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900;" onclick="switchDay(1, this)">Day 1</div>
-                <div class="date-tab" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900;" onclick="switchDay(2, this)">Day 2</div>
-                <div class="date-tab" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900;" onclick="switchDay(3, this)">Day 3</div>
+                <div class="date-tab active" id="day-1-btn" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900; background:var(--accent); color:#fff;" onclick="switchDay(1, this)">Day 1</div>
+                <div class="date-tab" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900; background:#fff;" onclick="switchDay(2, this)">Day 2</div>
+                <div class="date-tab" style="flex:1; padding:12px; text-align:center; border:var(--border-thick); border-radius:12px; font-weight:900; background:#fff;" onclick="switchDay(3, this)">Day 3</div>
             </div>
-            
             <div id="transport-list"></div>
             <button onclick="openPrompt('transport')" style="width:100%; padding:10px; background:none; border:2px dashed var(--text-light); border-radius:12px; color:var(--text-light); font-weight:900; margin-bottom:20px;">+ 新增交通票券</button>
-
-            <div class="timeline-container" id="schedule-list"></div>
-            <button class="add-btn-main" onclick="openPrompt('schedule')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增行程</button>
+            <div class="timeline-container" id="schedule-list" style="position: relative; padding-left: 30px; border-left: 3px solid var(--text-main); margin-left: 10px;"></div>
+            <button onclick="openPrompt('schedule')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增行程</button>
         </div>
 
         <div id="wallet" class="page">
@@ -147,7 +142,7 @@
                 <span style="font-weight:700;">TOTAL</span><span id="wallet-total" style="font-size:26px; font-weight:900;">$ 0</span>
             </div>
             <div class="calc-container">
-                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <div style="display:flex; gap:10px; margin-bottom:12px;">
                     <button id="btn-twd" class="curr-btn active" onclick="setCurrency('TWD')">TWD</button>
                     <button id="btn-cny" class="curr-btn" onclick="setCurrency('CNY')">CNY</button>
                 </div>
@@ -156,20 +151,20 @@
                 <div id="calc-converted" style="text-align:right; color:var(--accent); font-weight:900; height:20px; font-size:14px; margin-bottom:10px;"></div>
                 <div class="calc-grid">
                     <button class="calc-btn" onclick="press('7')">7</button><button class="calc-btn" onclick="press('8')">8</button><button class="calc-btn" onclick="press('9')">9</button><button class="calc-btn" style="color:var(--accent)" onclick="press('C')">C</button>
-                    <button class="calc-btn" onclick="press('4')">4</button><button class="calc-btn" onclick="press('5')">5</button><button class="calc-btn" onclick="press('6')">6</button><button class="calc-btn" onclick="saveExp()" style="grid-row:span 2; background:var(--accent); color:#fff; height:100%;">OK</button>
-                    <button class="calc-btn" onclick="press('1')">1</button><button class="calc-btn" onclick="press('2')">2</button><button class="calc-btn" onclick="press('3')">3</button>
-                    <button class="calc-btn" style="grid-column:span 3; aspect-ratio:auto;" onclick="press('0')">0</button><button class="calc-btn" onclick="press('.')">.</button>
+                    <button class="calc-btn" onclick="press('4')">4</button><button class="calc-btn" onclick="press('5')">5</button><button class="calc-btn" onclick="press('6')">6</button><button class="calc-btn" onclick="press('0')">0</button>
+                    <button class="calc-btn" onclick="press('1')">1</button><button class="calc-btn" onclick="press('2')">2</button><button class="calc-btn" onclick="press('3')">3</button><button class="calc-btn" onclick="press('.')">.</button>
+                    <button class="calc-btn ok-btn" style="grid-column: span 4; aspect-ratio: auto; height: 50px; margin-top: 5px;" onclick="saveExp()">OK 儲存帳目</button>
                 </div>
             </div>
             <div id="wallet-list"></div>
         </div>
 
-        <div id="gift" class="page"><h2 style="font-size:26px; font-weight:900;">GIFT</h2><div id="gift-list"></div><button class="add-btn-main" onclick="openPrompt('gift')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增項目</button></div>
-        <div id="luggage" class="page"><h2 style="font-size:26px; font-weight:900;">PACKING</h2><div id="luggage-list"></div><button class="add-btn-main" onclick="openPrompt('luggage')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增項目</button></div>
+        <div id="gift" class="page"><h2 style="font-size:26px; font-weight:900;">GIFT</h2><div id="gift-list"></div><button onclick="openPrompt('gift')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增項目</button></div>
+        <div id="luggage" class="page"><h2 style="font-size:26px; font-weight:900;">PACKING</h2><div id="luggage-list"></div><button onclick="openPrompt('luggage')" style="width:100%; padding:18px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; font-size:22px; margin-top:10px;">+ 新增項目</button></div>
     </div>
 
     <div id="custom-prompt" class="custom-prompt">
-        <div class="prompt-card">
+        <div style="background: var(--bg-base); border: var(--border-thick); border-radius: 24px; width: 100%; max-width: 320px; padding: 25px;">
             <h3 id="prompt-title" style="margin-top:0">新增項目</h3>
             <div id="transport-fields" style="display:none;">
                 <div class="icon-selector">
@@ -196,7 +191,7 @@
     </nav>
 
     <script>
-        let curPage = 'home', curDay = 1, calcVal = '', curCurrency = 'TWD', pendingTransType = 'airplane';
+        let curPage = 'home', curDay = 1, calcVal = '', curCurrency = 'TWD', pendingTransType = 'airplane', pendingPage = '';
         const RATE = 4.5;
         let db = {
             schedule: JSON.parse(localStorage.getItem('xm_sch') || '[]'),
@@ -220,8 +215,8 @@
 
         function switchDay(day, el) {
             curDay = day;
-            document.querySelectorAll('.date-tab').forEach(t => { t.classList.remove('active'); t.style.background = '#fff'; t.style.color = 'var(--text-main)'; });
-            el.classList.add('active'); el.style.background = 'var(--accent)'; el.style.color = '#fff';
+            document.querySelectorAll('.date-tab').forEach(t => { t.style.background = '#fff'; t.style.color = 'var(--text-main)'; });
+            el.style.background = 'var(--accent)'; el.style.color = '#fff';
             render();
         }
 
@@ -230,6 +225,10 @@
             document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('type-' + (type==='airplane'?'air':'ferry')).classList.add('active');
         }
+
+        function setCurrency(curr) { curCurrency = curr; document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active')); document.getElementById('btn-'+curr.toLowerCase()).classList.add('active'); updateCalcDisplay(); }
+        function press(k) { if(k==='C') calcVal=''; else if(k==='.' && calcVal.includes('.')) return; else calcVal+=k; updateCalcDisplay(); }
+        function updateCalcDisplay() { document.getElementById('calc-num').innerText = calcVal || '0'; document.getElementById('calc-converted').innerText = (curCurrency === 'CNY' && calcVal) ? '≈ NT$ ' + Math.round(parseFloat(calcVal) * RATE) : ''; }
 
         function render() {
             const list = document.getElementById(curPage + '-list');
@@ -244,20 +243,20 @@
                         </div>
                         <div class="ticket-right">
                             <div><div class="ticket-no">${t.no}</div><div style="font-size:12px; font-weight:700; color:var(--text-light)">${t.name}</div></div>
-                            <div style="text-align:right">
-                                <div class="ticket-time">${t.time}</div>
-                                <div onclick="delTransport(${db.transport.indexOf(t)})" style="color:#ccc; font-size:12px;">DELETE</div>
-                            </div>
+                            <div style="text-align:right"><div class="ticket-time">${t.time}</div><div onclick="delTransport(${db.transport.indexOf(t)})" style="color:#ccc; font-size:11px;">DEL</div></div>
                         </div>
                     </div>
                 `).join('');
 
                 const daySch = db.schedule.filter(s => s.day === curDay).sort((a,b) => a.time.localeCompare(b.time));
                 list.innerHTML = daySch.map(s => `
-                    <div class="timeline-item"><div class="timeline-dot"></div><div class="card-menu" style="flex-direction:row; align-items:center; justify-content:space-between; width:100%;">
-                        <div><div style="color:var(--accent); font-weight:900; font-size:14px;">${s.time}</div><div style="font-size:18px; font-weight:900;">${s.name}</div></div>
-                        <div style="color:#ccc" onclick="delItem('schedule', ${db.schedule.indexOf(s)})">✕</div>
-                    </div></div>
+                    <div style="position:relative; margin-bottom:20px;">
+                        <div style="position:absolute; left:-39px; top:8px; width:14px; height:14px; background:#fff; border:3px solid var(--accent); border-radius:50%; z-index:2;"></div>
+                        <div class="card-menu" style="flex-direction:row; align-items:center; justify-content:space-between;">
+                            <div><div style="color:var(--accent); font-weight:900; font-size:14px;">${s.time}</div><div style="font-size:18px; font-weight:900;">${s.name}</div></div>
+                            <div style="color:#ccc" onclick="delItem('schedule', ${db.schedule.indexOf(s)})">✕</div>
+                        </div>
+                    </div>
                 `).join('');
             } else if (curPage === 'wallet') {
                 let total = 0;
@@ -279,12 +278,20 @@
             }
         }
 
-        // 功能邏輯維持原樣 (計算機、存檔、彈窗)
-        function setCurrency(curr) { curCurrency = curr; document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active')); document.getElementById('btn-'+curr.toLowerCase()).classList.add('active'); updateCalcDisplay(); }
-        function press(k) { if(k==='C') calcVal=''; else if(k==='.' && calcVal.includes('.')) return; else calcVal+=k; updateCalcDisplay(); }
-        function updateCalcDisplay() { document.getElementById('calc-num').innerText = calcVal || '0'; document.getElementById('calc-converted').innerText = (curCurrency === 'CNY' && calcVal) ? '≈ NT$ ' + Math.round(parseFloat(calcVal) * RATE) : ''; }
-        function saveExp() { if(!calcVal) return; const val = parseFloat(calcVal); const twd = curCurrency === 'CNY' ? Math.round(val * RATE) : Math.round(val); db.wallet.unshift({ name: document.getElementById('exp-name').value || '一般支出', twd, orig: curCurrency==='CNY'?`¥ ${val}`:`$ ${val}` }); save('wallet'); calcVal = ''; document.getElementById('exp-name').value = ''; updateCalcDisplay(); }
-        function openPrompt(type) { pendingPage = type; document.getElementById('transport-fields').style.display = (type==='transport') ? 'block' : 'none'; document.getElementById('prompt-time').style.display = (type==='gift'||type==='luggage') ? 'none' : 'block'; document.getElementById('custom-prompt').classList.add('active'); }
+        function saveExp() {
+            if(!calcVal) return;
+            const val = parseFloat(calcVal);
+            const twd = curCurrency === 'CNY' ? Math.round(val * RATE) : Math.round(val);
+            db.wallet.unshift({ name: document.getElementById('exp-name').value || '一般支出', twd, orig: curCurrency==='CNY'?`¥ ${val}`:`$ ${val}` });
+            save('wallet'); calcVal = ''; document.getElementById('exp-name').value = ''; updateCalcDisplay();
+        }
+
+        function openPrompt(type) {
+            pendingPage = type;
+            document.getElementById('transport-fields').style.display = (type==='transport') ? 'block' : 'none';
+            document.getElementById('prompt-time').style.display = (type==='gift'||type==='luggage') ? 'none' : 'block';
+            document.getElementById('custom-prompt').classList.add('active');
+        }
         function closePrompt() { document.getElementById('custom-prompt').classList.remove('active'); }
         function handlePromptConfirm() {
             const name = document.getElementById('prompt-input').value; if(!name) return;
@@ -293,7 +300,8 @@
             else db[pendingPage].push({ name, done: false });
             save(pendingPage); closePrompt(); document.getElementById('prompt-input').value = '';
         }
-        function save(type) { localStorage.setItem({schedule:'xm_sch',transport:'xm_trans',gift:'xm_gift',luggage:'xm_lug',wallet:'xm_exp'}[type], JSON.stringify(db[type])); render(); }
+
+        function save(t) { localStorage.setItem({schedule:'xm_sch',transport:'xm_trans',gift:'xm_gift',luggage:'xm_lug',wallet:'xm_exp'}[t], JSON.stringify(db[t])); render(); }
         function delItem(t, idx) { if(confirm("刪除？")) { db[t].splice(idx,1); save(t); } }
         function delTransport(idx) { if(confirm("刪除？")) { db.transport.splice(idx,1); save('transport'); } }
         function toggleCheck(t, idx) { db[t][idx].done = !db[t][idx].done; save(t); }
