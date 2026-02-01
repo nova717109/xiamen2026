@@ -11,81 +11,121 @@
             --text-main: #4a3f35;
             --text-light: #8c7e74;
             --accent: #d96d32; /* 主視覺橘色 */
-            --border-thick: 2.5px solid #4a3f35;
+            --white: #ffffff;
+            --border-thick: 2.5px solid var(--text-main);
             --shadow: 4px 4px 0px rgba(74, 63, 53, 0.2);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Zen Maru Gothic', serif; }
-        body { margin: 0; background-color: var(--bg-base); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* 1. 滾動修復：確保主容器可以正常滾動，且不被導覽列遮擋 */
+        body { 
+            margin: 0; background-color: var(--bg-base); color: var(--text-main); 
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden; 
+        }
 
-        /* 5. 頁面滾動優化：修正無法滾動問題 */
-        .content-container { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
-        .page { display: none; padding: 20px 20px 120px; }
+        .content-container { 
+            flex: 1; overflow-y: auto; overflow-x: hidden; 
+            padding-bottom: 120px; /* 為固定導覽列留出空間 */
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 1. 首頁主題：更圓、更粗、有投影 */
+        /* 首頁標題：更圓更粗+投影 */
         .header { padding: 40px 20px 20px; text-align: center; }
         .header h1 { 
-            font-size: 38px; font-weight: 900; margin: 0; letter-spacing: 1px; line-height: 1; 
-            color: var(--text-main);
-            text-shadow: 4px 4px 0px rgba(74, 63, 53, 0.15); /* 投影效果 */
-            border-radius: 50px; /* 模擬更圓潤的視覺感 */
+            font-size: 38px; font-weight: 900; margin: 0; letter-spacing: 1px; 
+            text-shadow: 4px 4px 0px rgba(74, 63, 53, 0.15); 
         }
-        .header p { font-size: 15px; font-weight: 700; margin-top: 10px; color: var(--accent); }
+        .header p { font-size: 15px; font-weight: 700; margin-top: 8px; color: var(--accent); }
 
-        /* 2. 左上方頁面主題文字 */
-        .page-title { font-size: 24px; font-weight: 900; margin: 0 0 20px 0; color: var(--text-main); }
+        /* 頁面標題 */
+        .page-title { font-size: 26px; font-weight: 900; margin-bottom: 20px; color: var(--text-main); display: block; }
 
-        /* 卡片與 Icon */
-        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card-menu { 
-            background: #fff; border: var(--border-thick); border-radius: 20px; 
-            padding: 20px 15px; display: flex; flex-direction: column; box-shadow: var(--shadow);
+        /* 2. 行程時間軸強化 (參考附圖樣式) */
+        .timeline-container { position: relative; padding-left: 30px; margin-top: 20px; }
+        .timeline-line { 
+            position: absolute; left: 8px; top: 0; bottom: 0; 
+            width: 3px; background: var(--text-main); border-radius: 2px;
         }
-        .card-full { grid-column: span 2; flex-direction: row; align-items: center; padding: 25px; }
-        .icon-box { width: 34px; height: 34px; margin-bottom: 10px; }
-        .card-full .icon-box { margin-bottom: 0; margin-right: 18px; width: 42px; height: 42px; }
-        .label-en { font-size: 19px; font-weight: 900; }
-
-        /* 3. 記帳計算機 (修正按鈕 0) */
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .calc-btn { 
-            height: 60px; font-size: 20px; font-weight: 900; background: #fff; 
-            border: var(--border-thick); border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        .timeline-item { position: relative; margin-bottom: 25px; }
+        .timeline-dot { 
+            position: absolute; left: -28px; top: 10px; width: 14px; height: 14px; 
+            background: var(--white); border: 3px solid var(--accent); border-radius: 50%; z-index: 2;
         }
-        .calc-btn-big { grid-row: span 2; height: 130px; background: var(--text-main); color: #fff; }
-
-        /* 4. 導覽列：點選換色（咖啡變橘色） */
-        .nav-bar { 
-            position: fixed; bottom: 20px; left: 15px; right: 15px; height: 75px; 
-            background: #fff; border: var(--border-thick); border-radius: 22px; 
-            display: flex; justify-content: space-around; align-items: center; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .timeline-card { 
+            background: var(--white); border: var(--border-thick); border-radius: 18px; 
+            padding: 15px; box-shadow: var(--shadow); position: relative;
         }
-        .nav-item { 
-            flex: 1; text-align: center; color: var(--text-main); /* 預設咖啡色 */
-            font-size: 16px; font-weight: 900; transition: color 0.3s ease; 
-        }
-        .nav-item.active { color: var(--accent); } /* 點選後變橘色 */
-
-        /* 清單勾選樣式 */
-        .card-item { 
-            background: white; border: var(--border-thick); border-radius: 15px; 
-            padding: 15px; margin-bottom: 12px; display: flex; align-items: center; 
-        }
-        .check-box { width: 22px; height: 22px; border: 2.5px solid var(--text-main); border-radius: 6px; margin-right: 12px; position: relative; }
-        .checked .check-box { background: var(--accent); border-color: var(--accent); }
-        .checked .check-box::after { content: "✓"; color: #fff; position: absolute; top: -2px; left: 3px; font-weight: 900; }
-        .checked b { text-decoration: line-through; color: var(--text-light); }
+        .timeline-time { font-size: 14px; font-weight: 900; color: var(--accent); margin-bottom: 4px; }
+        .timeline-content { font-size: 18px; font-weight: 900; }
+        .del-btn { position: absolute; right: 10px; top: 10px; color: var(--text-light); font-size: 18px; }
 
         /* 日期切換 */
-        .date-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .date-tab { flex: 1; padding: 10px; text-align: center; border: var(--border-thick); border-radius: 12px; font-weight: 900; background: #fff; }
-        .date-tab.active { background: var(--text-main); color: #fff; }
+        .date-tabs { display: flex; gap: 10px; margin-bottom: 25px; }
+        .date-tab { 
+            flex: 1; padding: 12px; text-align: center; border: var(--border-thick); 
+            border-radius: 12px; font-weight: 900; background: var(--white); transition: 0.2s;
+        }
+        .date-tab.active { background: var(--text-main); color: var(--white); }
 
-        /* 換匯彈窗 */
-        .calc-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 25px; }
-        .calc-modal.active { display: flex; }
-        .float-calc-btn { position: fixed; right: 20px; bottom: 105px; width: 62px; height: 62px; background: var(--accent); border: var(--border-thick); color: white; border-radius: 18px; display: flex; align-items: center; justify-content: center; z-index: 1500; }
+        /* 3. 新增按鍵文字放大 */
+        .add-btn-main { 
+            width: 100%; padding: 18px; border-radius: 50px; background: var(--text-main); 
+            color: var(--white); border: none; font-weight: 900; font-size: 20px; /* 字體放大 */
+            margin-top: 15px; box-shadow: var(--shadow);
+        }
+
+        /* 4. 彈窗畫面主視覺化 */
+        .custom-prompt { 
+            position: fixed; inset: 0; background: rgba(74, 63, 53, 0.6); 
+            z-index: 4000; display: none; align-items: center; justify-content: center; padding: 20px; 
+        }
+        .custom-prompt.active { display: flex; }
+        .prompt-card { 
+            background: var(--bg-base); border: var(--border-thick); border-radius: 24px; 
+            width: 100%; max-width: 320px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .prompt-card h3 { margin: 0 0 15px 0; font-weight: 900; color: var(--text-main); }
+        .prompt-card input { 
+            width: 100%; padding: 15px; border: var(--border-thick); border-radius: 12px; 
+            font-size: 18px; font-weight: 700; margin-bottom: 20px; outline: none;
+        }
+        .prompt-btns { display: flex; gap: 10px; }
+        .prompt-btns button { 
+            flex: 1; padding: 12px; border-radius: 10px; font-weight: 900; border: none; cursor: pointer; 
+        }
+        .btn-cancel { background: #e0d7cc; color: var(--text-main); }
+        .btn-confirm { background: var(--accent); color: var(--white); }
+
+        /* 導覽列：點選顏色切換 */
+        .nav-bar { 
+            position: fixed; bottom: 20px; left: 15px; right: 15px; height: 75px; 
+            background: var(--white); border: var(--border-thick); border-radius: 22px; 
+            display: flex; justify-content: space-around; align-items: center; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .nav-item { flex: 1; text-align: center; color: var(--text-main); font-size: 16px; font-weight: 900; transition: 0.3s; }
+        .nav-item.active { color: var(--accent); }
+
+        /* 清單項目樣式 (伴手禮/行李) */
+        .list-card { 
+            background: var(--white); border: var(--border-thick); border-radius: 15px; 
+            padding: 15px; margin-bottom: 12px; display: flex; align-items: center; box-shadow: 3px 3px 0px rgba(0,0,0,0.05);
+        }
+        .check-box { width: 22px; height: 22px; border: 2.5px solid var(--text-main); border-radius: 6px; margin-right: 12px; }
+        .checked .check-box { background: var(--accent); border-color: var(--accent); position: relative; }
+        .checked .check-box::after { content: "✓"; color: #fff; position: absolute; left: 4px; top: -2px; font-size: 16px; }
+        .checked span { text-decoration: line-through; color: var(--text-light); }
+
+        /* 匯率計算機小圓格 */
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .calc-btn { 
+            height: 60px; background: #fff; border: var(--border-thick); border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -98,82 +138,79 @@
     <div class="content-container">
         
         <div id="home" class="page active">
-            <div class="dashboard">
-                <div class="card-menu card-full" onclick="showPage('schedule')">
-                    <img class="icon-box" src="https://img.icons8.com/ios-filled/100/4a3f35/calendar-2.png">
-                    <div><span class="label-en">ITINERARY</span><br><span style="font-weight:700; font-size:13px; color:var(--text-light)">行程規劃</span></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="list-card" style="grid-column: span 2; padding: 25px;" onclick="showPage('schedule')">
+                    <b style="font-size: 20px;">🗓️ ITINERARY 行程規劃</b>
                 </div>
-                <div class="card-menu" onclick="showPage('wallet')">
-                    <img class="icon-box" src="https://img.icons8.com/ios-filled/100/4a3f35/wallet.png">
-                    <span class="label-en">WALLET</span><span style="font-size:12px; font-weight:700;">匯率記帳</span>
+                <div class="list-card" style="flex-direction: column; align-items: flex-start;" onclick="showPage('wallet')">
+                    <b>💰 WALLET</b><small>匯率記帳</small>
                 </div>
-                <div class="card-menu" onclick="showPage('gift')">
-                    <img class="icon-box" src="https://img.icons8.com/ios-filled/100/4a3f35/shopping-bag.png">
-                    <span class="label-en">GIFT</span><span style="font-size:12px; font-weight:700;">伴手禮</span>
+                <div class="list-card" style="flex-direction: column; align-items: flex-start;" onclick="showPage('gift')">
+                    <b>🎁 GIFT</b><small>伴手禮</small>
                 </div>
-                <div class="card-menu" onclick="showPage('luggage')">
-                    <img class="icon-box" src="https://img.icons8.com/ios-filled/100/4a3f35/suitcase.png">
-                    <span class="label-en">PACKING</span><span style="font-size:12px; font-weight:700;">行李清單</span>
+                <div class="list-card" style="flex-direction: column; align-items: flex-start;" onclick="showPage('luggage')">
+                    <b>📦 PACKING</b><small>行李清單</small>
                 </div>
-                <div class="card-menu" onclick="window.open('https://www.google.com/maps')">
-                    <img class="icon-box" src="https://img.icons8.com/ios-filled/100/4a3f35/google-maps.png">
-                    <span class="label-en">MAPS</span><span style="font-size:12px; font-weight:700;">地圖導航</span>
+                <div class="list-card" style="flex-direction: column; align-items: flex-start;" onclick="window.open('https://www.google.com/maps')">
+                    <b>📍 MAPS</b><small>地圖導航</small>
                 </div>
             </div>
         </div>
 
         <div id="schedule" class="page">
-            <h2 class="page-title">ITINERARY</h2>
+            <span class="page-title">ITINERARY</span>
             <div class="date-tabs">
                 <div class="date-tab active" onclick="switchDay(1, this)">Day 1</div>
                 <div class="date-tab" onclick="switchDay(2, this)">Day 2</div>
                 <div class="date-tab" onclick="switchDay(3, this)">Day 3</div>
             </div>
-            <div id="schedule-list"></div>
-            <button style="width:100%; padding:15px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900; margin-top:20px;" onclick="addItem('schedule')">+ 新增當日行程</button>
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                <div id="schedule-list"></div>
+            </div>
+            <button class="add-btn-main" onclick="openPrompt('schedule')">+ 新增行程</button>
         </div>
 
         <div id="gift" class="page">
-            <h2 class="page-title">GIFT LIST</h2>
+            <span class="page-title">GIFT LIST</span>
             <div id="gift-list"></div>
-            <button style="width:100%; padding:15px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900;" onclick="addItem('gift')">+ 新增購物項</button>
+            <button class="add-btn-main" onclick="openPrompt('gift')">+ 新增項目</button>
         </div>
 
         <div id="luggage" class="page">
-            <h2 class="page-title">PACKING</h2>
+            <span class="page-title">PACKING</span>
             <div id="luggage-list"></div>
-            <button style="width:100%; padding:15px; border-radius:50px; background:var(--text-main); color:#fff; border:none; font-weight:900;" onclick="addItem('luggage')">+ 新增行李項</button>
+            <button class="add-btn-main" onclick="openPrompt('luggage')">+ 新增行李</button>
         </div>
 
         <div id="wallet" class="page">
-            <h2 class="page-title">EXPENSES</h2>
+            <span class="page-title">EXPENSES</span>
             <div style="background:#fff; border:var(--border-thick); padding:20px; border-radius:20px; margin-bottom:20px;">
-                <input type="text" id="exp-name" placeholder="品項名稱..." style="width:100%; border:none; border-bottom:2px solid #eee; padding:10px 0; font-size:18px; font-weight:900; outline:none;">
+                <input type="text" id="exp-name" placeholder="輸入品項名稱..." style="width:100%; border:none; border-bottom:2px solid #eee; padding:10px 0; font-size:18px; font-weight:900; outline:none;">
                 <div id="calc-num" style="font-size:45px; font-weight:900; text-align:right; margin:10px 0;">0</div>
                 <div id="calc-twd" style="text-align:right; color:var(--accent); font-weight:900; margin-bottom:15px;">≈ NT$ 0</div>
-                
                 <div class="calc-grid">
                     <div class="calc-btn" onclick="press('7')">7</div><div class="calc-btn" onclick="press('8')">8</div><div class="calc-btn" onclick="press('9')">9</div><div class="calc-btn" style="color:var(--accent)" onclick="press('C')">C</div>
-                    <div class="calc-btn" onclick="press('4')">4</div><div class="calc-btn" onclick="press('5')">5</div><div class="calc-btn" onclick="press('6')">6</div><div class="calc-btn calc-btn-big" onclick="saveExp()">ADD</div>
+                    <div class="calc-btn" onclick="press('4')">4</div><div class="calc-btn" onclick="press('5')">5</div><div class="calc-btn" onclick="press('6')">6</div><div class="calc-btn" style="grid-row:span 2; height:130px; background:var(--text-main); color:#fff;" onclick="saveExp()">ADD</div>
                     <div class="calc-btn" onclick="press('1')">1</div><div class="calc-btn" onclick="press('2')">2</div><div class="calc-btn" onclick="press('3')">3</div>
-                    <div class="calc-btn" style="grid-column: span 3;" onclick="press('0')">0</div> </div>
+                    <div class="calc-btn" style="grid-column: span 3;" onclick="press('0')">0</div>
+                </div>
             </div>
             <div id="wallet-list"></div>
         </div>
     </div>
 
-    <div id="q-calc" class="calc-modal" onclick="if(event.target==this) this.classList.remove('active')">
-        <div style="background:#fff; border:var(--border-thick); padding:25px; border-radius:24px; width:100%; max-width:320px;">
-            <h2 style="margin:0 0 15px 0;">CURRENCY</h2>
-            <input type="number" id="q-input" oninput="calcExchange()" placeholder="輸入人民幣 CNY" style="width:100%; padding:15px; border:var(--border-thick); border-radius:12px; font-size:20px; font-weight:900;">
-            <div id="q-out" style="font-size:32px; font-weight:900; color:var(--accent); margin:20px 0; text-align:center;">≈ NT$ 0</div>
-            <button onclick="document.getElementById('q-calc').classList.remove('active')" style="width:100%; background:#000; color:#fff; padding:15px; border:none; border-radius:12px; font-weight:900;">DONE</button>
+    <div id="custom-prompt" class="custom-prompt">
+        <div class="prompt-card">
+            <h3 id="prompt-title">新增行程</h3>
+            <input type="text" id="prompt-input" placeholder="輸入內容...">
+            <input type="text" id="prompt-time" placeholder="時間 (例 09:30)" style="display:none;">
+            <div class="prompt-btns">
+                <button class="btn-cancel" onclick="closePrompt()">取消</button>
+                <button class="btn-confirm" onclick="handlePromptConfirm()">確定</button>
+            </div>
         </div>
     </div>
-
-    <button class="float-calc-btn" onclick="document.getElementById('q-calc').classList.add('active')">
-        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="3"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>
-    </button>
 
     <nav class="nav-bar">
         <div class="nav-item active" onclick="showPage('home')">首頁</div>
@@ -184,7 +221,7 @@
     </nav>
 
     <script>
-        let curPage = 'home', calcVal = '', curDay = 1;
+        let curPage = 'home', curDay = 1, calcVal = '', pendingType = '';
         const RATE = 4.5;
         let db = {
             schedule: JSON.parse(localStorage.getItem('xm_sch') || '[]'),
@@ -198,12 +235,10 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.getElementById('home-header').style.display = (id === 'home') ? 'block' : 'none';
-            
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
                 if(item.innerText === getZH(id)) item.classList.add('active');
             });
-            document.querySelector('.content-container').scrollTop = 0; // 切換頁面回到頂部
             render();
         }
 
@@ -225,52 +260,62 @@
             let data = db[curPage];
 
             if(curPage === 'schedule') {
-                const dayData = data.filter(i => i.day === curDay);
-                list.innerHTML = dayData.map((i, idx) => `
-                    <div class="card-item" style="justify-content:space-between">
-                        <div><small style="color:var(--accent); font-weight:900;">${i.time}</small><br><b>${i.name}</b></div>
-                        <span onclick="delItem('schedule', ${data.indexOf(i)})">✕</span>
+                const dayData = data.filter(i => i.day === curDay).sort((a,b) => a.time.localeCompare(b.time));
+                list.innerHTML = dayData.map(i => `
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-card">
+                            <div class="timeline-time">${i.time}</div>
+                            <div class="timeline-content">${i.name}</div>
+                            <div class="del-btn" onclick="delItem('schedule', ${data.indexOf(i)})">✕</div>
+                        </div>
                     </div>
                 `).join('');
             } else if(curPage === 'wallet') {
                 list.innerHTML = data.map((i, idx) => `
-                    <div class="card-item" style="justify-content:space-between">
+                    <div class="list-card" style="justify-content:space-between">
                         <div><b>${i.name}</b><br><small>¥${i.cny}</small></div>
                         <div style="text-align:right"><b style="color:var(--accent)">NT$ ${i.twd}</b><div onclick="delItem('wallet', ${idx})">✕</div></div>
                     </div>
                 `).join('');
             } else {
                 list.innerHTML = data.map((i, idx) => `
-                    <div class="card-item ${i.done ? 'checked' : ''}" onclick="toggleCheck('${curPage}', ${idx})">
+                    <div class="list-card ${i.done ? 'checked' : ''}" onclick="toggleCheck('${curPage}', ${idx})">
                         <div class="check-box"></div>
-                        <b style="flex:1">${i.name}</b>
-                        <span onclick="event.stopPropagation(); delItem('${curPage}', ${idx})">✕</span>
+                        <span style="flex:1; font-weight:900;">${i.name}</span>
+                        <div class="del-btn" style="position:static" onclick="event.stopPropagation(); delItem('${curPage}', ${idx})">✕</div>
                     </div>
                 `).join('');
             }
         }
 
-        function toggleCheck(type, idx) {
-            db[type][idx].done = !db[type][idx].done;
-            save(type);
+        // 彈窗功能
+        function openPrompt(type) {
+            pendingType = type;
+            document.getElementById('prompt-title').innerText = "新增" + getZH(type);
+            document.getElementById('prompt-input').value = '';
+            document.getElementById('prompt-time').style.display = (type === 'schedule') ? 'block' : 'none';
+            document.getElementById('custom-prompt').classList.add('active');
         }
 
-        function addItem(type) {
-            const n = prompt("輸入內容:");
-            if(!n) return;
-            if(type === 'schedule') {
-                const t = prompt("時間 (如 09:30):", "09:00");
-                db.schedule.push({ day: curDay, name: n, time: t });
+        function closePrompt() { document.getElementById('custom-prompt').classList.remove('active'); }
+
+        function handlePromptConfirm() {
+            const name = document.getElementById('prompt-input').value;
+            const time = document.getElementById('prompt-time').value || "09:00";
+            if(!name) return;
+
+            if(pendingType === 'schedule') {
+                db.schedule.push({ day: curDay, name: name, time: time });
             } else {
-                db[type].push({ name: n, done: false });
+                db[pendingType].push({ name: name, done: false });
             }
-            save(type);
+            save(pendingType);
+            closePrompt();
         }
 
-        function delItem(type, idx) {
-            if(confirm("確定刪除？")) { db[type].splice(idx, 1); save(type); }
-        }
-
+        function toggleCheck(type, idx) { db[type][idx].done = !db[type][idx].done; save(type); }
+        function delItem(type, idx) { if(confirm("確定刪除？")) { db[type].splice(idx, 1); save(type); } }
         function save(type) {
             const keys = {schedule:'xm_sch', gift:'xm_gift', luggage:'xm_lug', wallet:'xm_exp'};
             localStorage.setItem(keys[type], JSON.stringify(db[type]));
@@ -283,10 +328,6 @@
             if(!calcVal) return;
             db.wallet.unshift({ name: n, cny: calcVal, twd: Math.round(calcVal*RATE) });
             save('wallet'); calcVal=''; document.getElementById('exp-name').value=''; press('C');
-        }
-        function calcExchange() {
-            const v = document.getElementById('q-input').value;
-            document.getElementById('q-out').innerText = '≈ NT$ ' + Math.round((parseFloat(v)||0)*RATE);
         }
 
         window.onload = () => showPage('home');
